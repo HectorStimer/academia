@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <title>Academia Hydra</title>
+</head>
+<body>
+    <header class="header">
+        <img src="{{url_for('static', filename='imagens/hydra_com_texto.png')}}" alt="logo" class="logo">
+        <nav class="menu">
+            <a href="index.html">Home</a>
+            <a href="loginAluno.html">Espaço do aluno</a>
+            <a href="#">Buscar academia</a>
+            <a href="#">Mensalidade</a>
+        </nav>
+    </header>
+
+    <!--banner promo-->
+
+    <div class="promocao">
+        <img src="{{url_for('static',filename='imagens/banner_promocao.png')}}">
+    </div>
+
+    <h1>Onde estamos localizados e oque oferecemos?</h1>
+
+    <!--Imagem do centro com o gean-->
+
+    <div class="div_central">
+        <div class="imagem_central">
+            <img src="{{url_for('static', filename='imagens/atleta.png')}}" alt="" id="atleta1">
+            <p id="apresentacao">A Academia Hydra, localizada em Santa Maria do Oeste, é uma academia de ginásio que se dedica ao bem-estar físico e à saúde dos seus membros. Oferece uma variedade de serviços, como musculação, treino funcional, aulas em grupo, e acompanhamento personalizado por profissionais qualificados.
+                A academia é equipada com aparelhos modernos, garantindo que os membros tenham acesso ao que há de mais recente em termos de tecnologia de fitness. Além disso, o ambiente é pensado para ser acolhedor e motivador, promovendo não só a prática de exercícios físicos, mas também um estilo de vida saudável para a comunidade local.</p>
+            <img  src="{{url_for('static', filename='imagens/atleta2.png')}}" alt="" id="atleta">
+        </div>
+    </div>
+
+    <div class="tabela">
+        <h2>Nossos planos</h2>
+        <table>
+            <tr>
+                <th> </th>
+                <th>Plano Básico</th>
+                <th>Plano Avançado</th>
+                <th>Plano Hydra</th>
+            </tr>
+            <tr>
+                <td>Acesso a academia até 3 Dias/semana</td>
+                <td><img src="{{url_for('static', filename='imagens/check.png')}}"></td>
+                <td><img src="{{url_for('static', filename='imagens/check.png')}}"></td>
+                <td><img src="{{url_for('static', filename='imagens/check.png')}}"></td>
+            </tr>
+            <tr>
+                <td class="info">Acesso a academia até 4 Dias/semana</td>
+                <td><img src="{{url_for('static', filename='imagens/x.png')}}"></td>
+                <td><img src="{{url_for('static', filename='imagens/check.png')}}"></td>
+                <td><img src="{{url_for('static', filename='imagens/check.png')}}"></td>
+            </tr>
+            <tr>
+                <td class="info">Acesso a academia até 6 Dias/semana</td>
+                <td><img src="{{url_for('static', filename='imagens/check.png')}}"></td>
+                <td><img src="{{url_for('static', filename='imagens/check.png')}}"></td>
+                <td><img src="{{url_for('static', filename='imagens/check.png')}}"></td>
+            </tr>
+            <tr>
+                <td class="info">Leve um amigo para treinar de graça 1 vez por semana</td>
+                <td><img src="{{url_for('static', filename='imagens/x.png')}}"></td>
+                <td><img src="{{url_for('static', filename='imagens/x.png')}}"></td>
+                <td><img src="{{url_for('static', filename='imagens/check.png')}}"></td>
+            </tr>
+            <tr>
+                <td class="info">Acompanhamento de personal</td>
+                <td><img src="{{url_for('static', filename='imagens/x.png')}}"></td>
+                <td><img src="{{url_for('static', filename='imagens/x.png')}}"></td>
+                <td><img src="{{url_for('static', filename='imagens/check.png')}}"></td>
+            </tr>
+            <tr>
+                <td>
+                <td><b>R$99,90/mês</b></td>
+                <td><b>R$109,90/mês</b></td>
+                <td><b>R$119,90/mês</b></td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div class="localizacao">
+        <h2>Ficamos em R. Alexandre Kordiaki, 351 - Santa Maria do Oeste, PR, 85230-000</h2>        
+        <div class="Mapa">
+            <div style="max-width:100%;list-style:none; transition: none;overflow:hidden;width:500px;height:500px;">
+                <div id="mapa-iframe" style="width: 100%"><iframe width="100%" height="600" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=R.%20Alexandre%20Kordiaki,%20351%20-%20Santa%20Maria%20do%20Oeste,%20PR,%2085230-000+(Academia%20Hydra)&amp;t=&amp;z=15&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"><a href="https://www.gps.ie/collections/drones/">buy drones</a></iframe></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--instagram personais e academia -->
+
+    <h2 id="titulo-personais">Fique de olho na nossa lista de personais qualificados:</h2>
+
+    <div class="personais">
+        <div class="personal">
+            <div>
+                <p>Luanna</p>
+                <a href="https://www.instagram.com/verselluanna_personaltrainer/" target="_blank"> <img src="{{url_for('static', filename='imagens/instagramm.png')}}"></a>
+            </div>
+        </div>
+        <div class="personal">
+            <div>
+                <p>Hellen Rubia</p>
+                <a href="https://www.instagram.com/hellenrhubia_personal/" target="_blank"> <img src="{{url_for('static', filename='imagens/instagramm.png')}}"></a>
+            </div>
+        </div>
+        <div class="personal">
+            <div>
+                <p>Gean Lucas</p>
+                <a href="https://www.instagram.com/geanlucas_abreu/" target="_blank"> <img src="{{url_for('static', filename='imagens/instagramm.png')}}"></a>
+            </div>
+        </div>
+    </div>
+    <a href="https://www.instagram.com/academia__hydra/" target="_blank">   <img src="{{url_for('static', filename='imagens/instagramm.png')}}" id="instagram"> </a>
+
+    <!--direitos footer-->
+    <footer>
+        <p>© 2024 Academia Hydra. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,279 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: #f1f1f1;
+}
+
+h1 {
+    text-align: center;
+    color: black;
+    font-family: sans-serif, Arial;
+    font-size: 30px;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    box-shadow: 0 0 10px;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.logo {
+    max-width: 100px;
+    height: auto;
+}
+
+.menu {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.menu a {
+    text-decoration: none;
+    color: black;
+    font-size: 14px;
+    background-color: white;
+    border-radius: 100px;
+    text-align: center;
+    padding: 10px 15px;
+    font-family: sans-serif, Arial;
+    font-weight: 600;
+}
+
+.menu a:hover {
+    background-color: lightgray;
+}
+
+@media (max-width: 768px) {
+    .menu a {
+        display: none;
+    }
+
+    .menu a:nth-child(3) {
+        display: inline-block;
+    }
+}
+
+.promocao {
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+    
+}
+
+.promocao img {
+    max-width: 97vw;
+    border-radius: 30px;
+    padding: 10px;
+}
+
+.div_central {
+    background-color: #f1f1f1;
+    padding: 16px;
+}
+
+.imagem_central {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    border-radius: 16px;
+    background-color: black;
+    flex-wrap: wrap;
+}
+
+#apresentacao {
+    color: white;
+    font-size: 25px;
+    width: 100%;
+    max-width: 700px;
+    padding: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: justify;
+}
+
+#atleta, #atleta1 {
+    max-width: 100%;
+    height: auto;
+    border: 5px;
+    color: black;
+    box-shadow: 0 0 20px;
+    border-radius: 16px;
+}
+
+.tabela {
+    background-color: white;
+    padding: 20px;
+    margin: 30px auto;
+    width: 80%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    color: black;
+}
+
+.tabela h2 {
+    font-family: sans-serif, Arial;
+    color: black;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+
+}
+
+.tabela table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.tabela th, .tabela td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-right: none;
+    border-left: none;
+    border-bottom: none;
+    font-family: sans-serif, Arial;
+}
+
+.tabela th {
+    background-color: white;
+    font-weight: bold;
+    border-top: none;
+}
+
+
+
+
+.tabela td img {
+    width: 28px;
+}
+
+@media (max-width: 768px) {
+    .tabela {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .tabela table {
+        width: 100%;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+.Mapa {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    width: 100%;
+    
+}
+
+.localizacao h2 {
+    font-family: sans-serif, Arial;
+    color: black;
+    font-size: 24px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+#mapa-iframe {
+    width: 80%;
+    height: 400px;
+    border: 3px solid white;
+    border: 1px solid;
+    border-color: black;
+}
+
+#instagram {
+    width: 50px;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+}
+
+.personal {
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgb(255, 255, 255);
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    margin: 0 15px;
+    width: 160px;
+    transition: transform 0.3s ease;
+    border: 1px solid;
+    border-color:#ddd;
+}
+
+.personal:hover {
+    transform: translateY(-5px);
+}
+
+.personal img {
+    width: 50px;
+    margin-left: 20px;
+    transition: transform 0.3s ease;
+}
+
+.personal img:hover {
+    transform: scale(1.1);
+}
+
+.personal p {
+    font-family: 'Arial', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.personal div {
+    display: flex;
+    align-items: center;
+}
+
+#titulo-personais {
+    font-family: sans-serif, arial;
+    font-size: 24px;
+    color: black;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: bold;
+    padding-top: 20px;
+}
+
+.personais {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+footer {
+    background-color: black;
+    color: white;
+    text-align: center;
+    margin-top: 50px;
+    bottom: 0;
+    width: 100%;
+    padding: 20px;
+    font-family: sans-serif, Arial;
+}

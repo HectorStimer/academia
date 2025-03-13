@@ -11,7 +11,7 @@
 
     <div class="register-container">
 
-    <h1>Registre-se</h1>
+    <h1>login</h1>
 
     <form action="register" id="register" method="post">
         <label for="email">Email: </label> 
@@ -19,22 +19,10 @@
         
         <label for="senha">Senha: </label>
         <input type="password" name="senha" id="senha" required placeholder="Digite sua senha">
-        <label for="senha">Digite novamente sua senha: </label>
-        <input type="password" name="senha" id="senha">
-
-        <label for="senha">Digite novamente sua senha: </label>
-        <input type="password" name="senha" id="senha">
-
-        <label for="telefone">telefone para contato: </label>
-        <input type="tel" name="telefone" id="telefone" required placeholder="Digite seu Numero de telefone" maxlength="11">
-
-        <label for="data ">Digite sua data de Nascimento: </label>
-        <input type="date" name="dataNascimento" id="senha" required placeholder="Digite sua Data de Nascimento">
-
 
         <button type="submit">Entrar</button>
         
-        <p>ja possui conta? <a href="{{url_for('login')}}">entre aqui</a></p>
+        <p>Ainda nao tem uma conta?<a href="{{url_for('register')}}">Entre aqui</a></p>
     </form>
 
     

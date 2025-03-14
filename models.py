@@ -44,5 +44,5 @@ class Plano(db.Model):
     __tablename__ = 'planos'
 
     id_plano = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    nomePano = db.Column(db.String(50), nullable=False)
+    nomePlano = db.Column(db.String(50), nullable=False)
     preco = db.Column(db.Numeric(10, 2), nullable=False)

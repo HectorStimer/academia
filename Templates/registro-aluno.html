@@ -1,43 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registre-se</title>
-    <link rel="stylesheet" href="static/registro-aluno.css">
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='registro-aluno.css') }}">
 </head>
 <body>
 
     <div class="register-container">
+        <h1>Registre-se</h1>
 
-    <h1>Registre-se</h1>
+        <form action="{{ url_for('register') }}" id="register" method="post">
+            {{ form.hidden_tag() }}  <!-- CSRF Token -->
+            
+            <label for="nome">Nome: </label> 
+            {{ form.nome() }}
 
-    <form action="register" id="register" method="post">
-        <label for="email">Email: </label> 
-        <input type="email" name="email" id="email" required placeholder="Digite seu e-mail">
-        
-        <label for="senha">Senha: </label>
-        <input type="password" name="senha" id="senha" required placeholder="Digite sua senha">
-        <label for="senha">Digite novamente sua senha: </label>
-        <input type="password" name="senha" id="senha">
+            <label for="email">Email: </label> 
+            {{ form.email() }}
 
-        <label for="senha">Digite novamente sua senha: </label>
-        <input type="password" name="senha" id="senha">
+            <label for="senha">Senha: </label>
+            {{ form.senha() }}
 
-        <label for="telefone">telefone para contato: </label>
-        <input type="tel" name="telefone" id="telefone" required placeholder="Digite seu Numero de telefone" maxlength="11">
+            <label for="confirmar_senha">Digite novamente sua senha: </label>
+            {{ form.confirmar_senha() }}
 
-        <label for="data ">Digite sua data de Nascimento: </label>
-        <input type="date" name="dataNascimento" id="senha" required placeholder="Digite sua Data de Nascimento">
+            <label for="telefone">Telefone para contato: </label>
+            {{ form.telefone() }}
 
+            <label for="data_nascimento">Digite sua data de Nascimento: </label>
+            {{ form.data_nascimento() }}
 
-        <button type="submit">Entrar</button>
-        
-        <p>ja possui conta? <a href="{{url_for('login')}}">entre aqui</a></p>
-    </form>
+            <label for="plano_id">Plano:</label>
+            {{ form.plano_id() }}
 
-    
+            <button type="submit">Entrar</button>
+
+            <p>Já possui conta? <a href="{{ url_for('login') }}">Entre aqui</a></p>
+        </form>
     </div>
+
 </body>
 </html>

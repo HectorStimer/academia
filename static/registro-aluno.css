@@ -1,48 +1,84 @@
+/* Importa fonte do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background: linear-gradient(to right, #4facfe, #00f2fe);
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    margin: 0;
 }
+
+.register-container {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    width: 500px;
+    text-align: center;
+    align-items: center;
+}
+
 h1 {
-    margin-bottom: 20px;
-    font-size: 24px;
-    color: #457cdc;
+    font-weight: 600;
+    color: #333;
 }
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+}
+
 input {
-    width: 90%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
-}
-button {
     width: 100%;
-    background: #007BFF;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+button {
+    background: #4facfe;
     color: white;
     border: none;
-    padding: 10px;
-    border-radius: 5px;
-    cursor: pointer;
+    padding: 12px;
+    border-radius: 6px;
     font-size: 16px;
-}
-button:hover {
-    background: #0056b3;
-}
-.flash-messages {
-    list-style: none;
-    padding: 0;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
     margin-top: 10px;
 }
-.register-container {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 500px;
+
+button:hover {
+    background: #3b8bf7;
+}
+
+p {
+    font-size: 14px;
+    margin-top: 11px;
+}
+
+a {
+    color: #4facfe;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+a:hover {
+    text-decoration: underline;
 }

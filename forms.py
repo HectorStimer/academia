@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import *
 from wtforms.validators import *
+from flask_login import login_manager
 
 class RegistroAlunoForm(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired()])

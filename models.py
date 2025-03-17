@@ -1,6 +1,7 @@
 from main import db
+from flask_login import UserMixin
 
-class Aluno(db.Model):
+class Aluno(db.Model,UserMixin):
     __tablename__ = 'alunos'
     
     id_aluno = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -11,7 +12,10 @@ class Aluno(db.Model):
     plano_id = db.Column(db.Integer, db.ForeignKey('planos.id_plano'), nullable=False)
     senha = db.Column(db.String(30), nullable=False)
 
-class Pagamento(db.Model):
+    def get_id(self):
+        return str(self.id_aluno)  
+
+class Pagamento(db.Model, UserMixin):
     __tablename__ = 'pagamento'  
 
     id_pagamento = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -21,7 +25,7 @@ class Pagamento(db.Model):
 
     aluno = db.relationship('Aluno', backref=db.backref('pagamentos', lazy=True, cascade="all, delete-orphan"))
 
-class Professor(db.Model):
+class Professor(db.Model,UserMixin):
     __tablename__ = 'professor'
 
     id_professor = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -31,7 +35,10 @@ class Professor(db.Model):
     email= db.Column(db.String(100), nullable=False, unique= True)
     senha= db.Column(db.String(30), nullable=False)
 
-class Treinamento(db.Model):
+    def get_id(self):
+        return str(self.id_professor)  
+
+class Treinamento(db.Model,UserMixin):
     __tablename__ = 'treinamento'
 
     id_treinamento = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -42,7 +49,7 @@ class Treinamento(db.Model):
     aluno = db.relationship('Aluno', backref=db.backref('treinamentos', lazy=True, cascade="all, delete-orphan"))
     professor = db.relationship('Professor', backref=db.backref('treinamentos', lazy=True, cascade="all, delete-orphan"))
 
-class Plano(db.Model):
+class Plano(db.Model,UserMixin):
     __tablename__ = 'planos'
 
     id_plano = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -50,7 +57,7 @@ class Plano(db.Model):
     preco = db.Column(db.Numeric(10, 2), nullable=False)
 
 
-class Progresso(db.Model):
+class Progresso(db.Model,UserMixin):
     __tablename__ = 'progresso'
     
     id_progresso = db.Column(db.Integer, primary_key=True, autoincrement=True)

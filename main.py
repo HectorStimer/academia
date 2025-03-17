@@ -7,7 +7,6 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 
 
-
 from routes import *  
 
 if __name__ == "__main__":

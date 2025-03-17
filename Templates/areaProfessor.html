@@ -1,0 +1,60 @@
+<!-- templates/dashboard_professor.html -->
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard do Professor</title>
+</head>
+<body>
+
+    <h1>Bem-vindo ao Dashboard, {{ professor.nome }}</h1>
+    
+    <h2>Enviar Treinamento para Aluno</h2>
+    <form action="{{ url_for('enviarTreinamento') }}" method="post">
+        {{ form.hidden_tag() }}
+        
+        <label for="id_aluno">Selecione o Aluno: </label>
+        <select name="id_aluno">
+            {% for aluno in alunos %}
+                <option value="{{ aluno.id_aluno }}">{{ aluno.nome }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="treino">Treinamento:</label>
+        {{ form.treino() }}
+
+        <button type="submit">Enviar Treinamento</button>
+    </form>
+
+    <h2>Estatísticas de Progresso dos Alunos</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Aluno</th>
+                <th>Progresso</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for aluno in alunos %}
+                <tr>
+                    <td>{{ aluno.nome }}</td>
+                    <td>
+                        {% if progresso_alunos[aluno.id_aluno] %}
+                            {% for p in progresso_alunos[aluno.id_aluno] %}
+                                <p>{{ p.progresso }}</p>
+                            {% else %}
+                                <p>Sem progresso registrado</p>
+                            {% endfor %}
+                        {% else %}
+                            <p>Sem progresso registrado</p>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

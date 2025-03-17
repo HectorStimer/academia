@@ -28,6 +28,8 @@ class Professor(db.Model):
     nome = db.Column(db.String(100), nullable=False)
     telefone = db.Column(db.String(14))
     especialidade = db.Column(db.String(20))
+    email= db.Column(db.String(100), nullable=False, unique= True)
+    senha= db.Column(db.String(30), nullable=False)
 
 class Treinamento(db.Model):
     __tablename__ = 'treinamento'
@@ -46,3 +48,13 @@ class Plano(db.Model):
     id_plano = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nomePlano = db.Column(db.String(50), nullable=False)
     preco = db.Column(db.Numeric(10, 2), nullable=False)
+
+
+class Progresso(db.Model):
+    __tablename__ = 'progresso'
+    
+    id_progresso = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id_aluno = db.Column(db.Integer, db.ForeignKey('alunos.id_aluno'), nullable=False)
+    progresso = db.Column(db.String(200), nullable=True)
+
+    aluno = db.relationship('Aluno', backref=db.backref('progresso', lazy=True))

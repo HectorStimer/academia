@@ -12,7 +12,7 @@
         <h1>Registre-se</h1>
 
         <form action="{{ url_for('register') }}" id="register" method="post">
-            {{ form.hidden_tag() }}  <!-- CSRF Token -->
+            {{ form.hidden_tag() }}  
             
             <label for="nome">Nome: </label> 
             {{ form.nome() }}
@@ -37,7 +37,7 @@
 
             <button type="submit">Entrar</button>
 
-            <p>Já possui conta? <a href="{{ url_for('login') }}">Entre aqui</a></p>
+            <p>Já possui conta? <a href="{{ url_for('loginAluno') }}">Entre aqui</a></p>
         </form>
     </div>
 

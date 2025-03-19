@@ -25,7 +25,7 @@ def register():
             telefone=form.telefone.data,
             data_nascimento=form.data_nascimento.data,
             plano_id=form.plano_id.data,  
-            senha=form.senha.data # Criptografa a senha
+            senha=form.senha.data 
         )
 
         db.session.add(novo_aluno)
@@ -109,6 +109,10 @@ def areaProfessor():
 def enviarTreinamento():
     form = TreinamentoForm()
     
+    with app.app_context():
+        form.aluno_id.choices = [(alunos.id_aluno, alunos.nomeAluno) for alunos in Aluno.query.all()]
+
+
     if form.validate_on_submit():
         novo_treinamento = Treinamento(
             treino=form.treino.data,

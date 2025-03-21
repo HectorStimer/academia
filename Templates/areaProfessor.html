@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='areaProfessor.css')}}">
     <title>Dashboard do Professor</title>
 </head>
 <body>
@@ -14,19 +15,12 @@
     <h2>Enviar Treinamento para Aluno</h2>
     <form action="{{ url_for('enviarTreinamento') }}" method="post">
         {{ form.hidden_tag() }}
-        
-        <label for="id_aluno">Selecione o Aluno: </label>
-        <select name="id_aluno">
-            {% for aluno in alunos %}
-                <option value="{{ aluno.id_aluno }}">{{ aluno.nome }}</option>
-            {% endfor %}
-        </select>
-
-        <label for="treino">Treinamento:</label>
-        {{ form.treino() }}
-
-        <button type="submit">Enviar Treinamento</button>
-    </form>
+        <label for="id_aluno">{{ form.id_aluno.label }}</label>
+        {{ form.id_aluno }}
+        <label for="treino">{{ form.treino.label }}</label>
+         {{ form.treino }}
+        <button type="submit">{{ form.submit }}</button>
+     </form>
 
     <h2>Estatísticas de Progresso dos Alunos</h2>
     <table>

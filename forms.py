@@ -24,7 +24,7 @@ class LoginAlunoForm(FlaskForm):
     submit = SubmitField("Entrar")
 
 class TreinamentoForm(FlaskForm):
-    id_aluno = SelectField('ID do Aluno', validators=[DataRequired()])
+    id_aluno = SelectField('ID do Aluno', validators=[DataRequired()], coerce=int) 
     treino = TextAreaField('Treinamento', validators=[DataRequired()])
     submit = SubmitField('Enviar Treinamento')
 

@@ -1,9 +1,23 @@
 from flask import render_template, request, redirect, url_for, flash, session
-from flask_login import login_user, LoginManager, UserMixin,login_required, current_user
+from flask_login import login_user, LoginManager,login_required, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from main import app, lm, db
 from models import *
 from forms import *
+
+
+
+@lm.user_loader
+def user_loader(user_id):
+    aluno = Aluno.query.get(user_id)
+    if aluno:
+        return aluno
+
+    professor = Professor.query.get(user_id)
+    if professor:
+        return professor
+
+    return None 
 
 
 @app.route("/")
@@ -42,30 +56,23 @@ def register():
 
 @app.route("/loginAluno", methods=['GET', 'POST'])
 def loginAluno():
-    form = LoginAlunoForm()
-    
-    if form.validate_on_submit():
-        aluno = Aluno.query.filter_by(email=form.email.data).first()  
-        if aluno and (aluno.senha == form.senha.data):
-            session['id_aluno'] = aluno.id_aluno
-            flash("Login realizado com sucesso", "success")
-            return redirect(url_for('areaAluno'))
+    form = LoginAlunoForm() 
+
+    if form.validate_on_submit(): 
+        email = form.email.data  
+        senha = form.senha.data
+
+        aluno = Aluno.query.filter_by(email=email).first()
+
+        if aluno and (aluno.senha == senha):  
+            login_user(aluno)
+            return redirect(url_for('areaProfessor'))  
+
         flash('Email ou senha incorretos', 'danger')
-    
-    return render_template("login.html", form=form)
+        return redirect(url_for('loginProfessor'))  
+    return render_template('loginProf.html', form=form) 
 
 
-@lm.user_loader
-def user_loader(user_id):
-    aluno = Aluno.query.get(user_id)
-    if aluno:
-        return aluno
-
-    professor = Professor.query.get(user_id)
-    if professor:
-        return professor
-
-    return None 
 
 
 
@@ -89,6 +96,9 @@ def loginProfessor():
     return render_template('loginProf.html', form=form) 
 
 
+@app.route('/areaAluno',methods=['GET'])
+
+
         
 @app.route('/areaProfessor', methods=["GET", "POST"])
 @login_required
@@ -96,35 +106,27 @@ def areaProfessor():
     if not isinstance(current_user, Professor):
         flash("Você precisa ser um professor para acessar esta área.", "warning")
         return redirect(url_for("loginProfessor"))
-
-    alunos = Aluno.query.all()  # Todos os alunos
-    progresso = {aluno.id_aluno: Progresso.query.filter_by(id_aluno=aluno.id_aluno).all() for aluno in alunos}
     
-    form = TreinamentoForm()  
-
-    return render_template('areaProfessor.html', professor=current_user, alunos=alunos, progresso_alunos=progresso, form=form)
-
+    form = TreinamentoForm()
+    form.id_aluno.choices = [(aluno.id_aluno, aluno.nome) for aluno in Aluno.query.all()] 
+    
+    return render_template('areaProfessor.html', professor=current_user, form=form)
 
 @app.route('/enviarTreinamento', methods=['POST'])
 def enviarTreinamento():
     form = TreinamentoForm()
-    
-    with app.app_context():
-        form.aluno_id.choices = [(alunos.id_aluno, alunos.nomeAluno) for alunos in Aluno.query.all()]
+    form.id_aluno.choices = [(aluno.id_aluno, aluno.nome) for aluno in Aluno.query.all()] 
 
-
-    if form.validate_on_submit():
-        novo_treinamento = Treinamento(
-            treino=form.treino.data,
-            id_aluno=form.id_aluno.data,
-            id_professor=current_user.id_professor  
+    if form.validate_on_submit():  
+        novo_Treinamento = Treinamento(
+            aluno_id=form.id_aluno.data,
+            treino=form.treino.data
         )
-        
-        db.session.add(novo_treinamento)
+        db.session.add(novo_Treinamento)
         db.session.commit()
         
         flash("Treinamento enviado com sucesso!", "success")
         return redirect(url_for('areaProfessor'))
     
     flash("Erro ao enviar treinamento", "danger")
-    return redirect(url_for('areaProfessor', form=form))
+    return redirect(url_for('areaProfessor'))

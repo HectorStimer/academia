@@ -11,7 +11,7 @@
     <div class="register-container">
         <h1>Registre-se</h1>
 
-        <form action="{{ url_for('registrarAluno') }}" id="register" method="post">
+        <form action="{{ url_for('registrarProfessor') }}" id="register" method="post">
             {{ form.hidden_tag() }}  
             
             <label for="nome">Nome: </label> 
@@ -37,7 +37,7 @@
 
             <button type="submit">Entrar</button>
 
-            <p>Já possui conta? <a href="{{ url_for('loginAluno') }}">Entre aqui</a></p>
+            <p>Já possui conta? <a href="{{ url_for('loginProfessor') }}">Entre aqui</a></p>
         </form>
     </div>
 

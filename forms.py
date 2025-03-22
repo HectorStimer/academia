@@ -13,6 +13,16 @@ class RegistroAlunoForm(FlaskForm):
     plano_id = SelectField('Plano', coerce=int, validators=[DataRequired()])
     submit = SubmitField('Registrar')
 
+class RegistrarProfessorForm(FlaskForm):
+    nome = StringField('Nome', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(),Length(max= 100), Email(message='Email inválido'),Length(min=6,max= 30)])
+    senha = PasswordField('Senha', validators=[DataRequired(), EqualTo('confirmar', message="As senhas devem ser iguais."),Length(min=6,max= 30)])
+    confirmar = PasswordField('Confirmar Senha', validators=[DataRequired(), EqualTo('senha', message="As senhas devem ser iguais."),Length(min=6,max= 30)])
+    telefone = StringField('Telefone', validators=[DataRequired(message='Precisamos de seu telefone para contato'),Length(max=11)])
+    especialidade = StringField('Especialidade', validators=[DataRequired(), Length(max=20)])
+    submit = SubmitField('Registrar')
+    
+
 class LoginProfessorForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email(message = 'Email do professor invalido no DB')])
     senha = PasswordField('Senha', validators=[DataRequired()])
@@ -29,10 +39,6 @@ class TreinamentoForm(FlaskForm):
     submit = SubmitField('Enviar Treinamento')
 
 
-
-
-
-
-
-
-    
+class receberTreinamentoForm(FlaskForm):
+    id_professor = StringField()
+    Treinamento = TextAreaField()

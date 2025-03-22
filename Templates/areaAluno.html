@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Aluno</title>
+</head>
+<body>
+    
+    <h1>Bem-vindo, {{ aluno.nome }}</h1>
+
+    <h2>Seus Treinamentos</h2>
+    <ul>
+        {% for treino in treinamentos %}
+            <li>
+                <strong>Professor:</strong> {{ treino.professor.nome }} <br>
+                <strong>Treinamento:</strong> {{ treino.treino }}
+            </li>
+        {% else %}
+            <p>Você ainda não recebeu nenhum treinamento.</p>
+        {% endfor %}
+    </ul>
+    
+    <a href="{{ url_for('logout') }}">Logout</a>
+</body>
+</html>

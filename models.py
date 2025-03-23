@@ -11,14 +11,17 @@ class Aluno(db.Model, UserMixin):
     telefone = db.Column(db.String(14))
     data_nascimento = db.Column(db.Date)
     plano_id = db.Column(db.Integer, db.ForeignKey('planos.id_plano'), nullable=False)
-    senha = db.Column(db.String(225), nullable=False)  # Alterado para 100 para permitir senhas maiores
+    senha_hash = db.Column(db.String(255), nullable=False) 
+
+    def set_senha(self, senha):
+        
+        self.senha_hash = generate_password_hash(senha)
+
+    def check_senha(self, senha):
+        return check_password_hash(self.senha_hash, senha)
 
     def get_id(self):
         return str(self.id_aluno)
-
-    # Aqui criamos o método para verificar a senha fornecida no login
-    def check_senha(self, senha_fornecida):
-        return check_password_hash(self.senha, senha_fornecida)
 
 class Pagamento(db.Model, UserMixin):
     __tablename__ = 'pagamento'  
@@ -31,21 +34,24 @@ class Pagamento(db.Model, UserMixin):
     aluno = db.relationship('Aluno', backref=db.backref('pagamentos', lazy=True, cascade="all, delete-orphan"))
 
 class Professor(db.Model, UserMixin):
-    __tablename__ = 'professores'  # Alterado para "professores" (plural para manter a consistência)
+    __tablename__ = 'professores' 
 
     id_professor = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nome = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), nullable=False, unique=True)  # Corrigido para manter a definição de "email"
+    email = db.Column(db.String(100), nullable=False, unique=True)  
     telefone = db.Column(db.String(14))
     especialidade = db.Column(db.String(20))
-    senha = db.Column(db.String(225), nullable=False)  # Alterado para 100 para permitir senhas maiores
+    senha_hash = db.Column(db.String(255), nullable=False) 
+
+    def set_senha(self, senha):
+        
+        self.senha_hash = generate_password_hash(senha)
+
+    def check_senha(self, senha):
+        return check_password_hash(self.senha_hash, senha)
 
     def get_id(self):
         return str(self.id_professor)
-
-    # Aqui criamos o método para verificar a senha fornecida no login
-    def check_senha(self, senha_fornecida):
-        return check_password_hash(self.senha, senha_fornecida) 
 
 class Treinamento(db.Model, UserMixin):
     __tablename__ = 'treinamentos'

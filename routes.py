@@ -21,8 +21,7 @@ def user_loader(user_id):
 def homepage():
     return render_template("index.html")
 
-# Registro do Aluno
-@app.route("/registrarAluno", methods=['GET', 'POST'])
+@app.route("/register/aluno", methods=['GET', 'POST'])
 def registrarAluno():
     form = RegistroAlunoForm()
 
@@ -30,22 +29,19 @@ def registrarAluno():
         form.plano_id.choices = [(plano.id_plano, plano.nomePlano) for plano in Plano.query.all()]
 
     if form.validate_on_submit():
-        # Criptografar a senha
-        senha_hash = generate_password_hash(form.senha.data)
-
         novo_aluno = Aluno(
             nome=form.nome.data,
             email=form.email.data,
             telefone=form.telefone.data,
             data_nascimento=form.data_nascimento.data,
-            plano_id=form.plano_id.data,  
-            senha=senha_hash  
+            plano_id=form.plano_id.data
         )
+        novo_aluno.set_senha(form.senha.data)  
 
         db.session.add(novo_aluno)
         db.session.commit()
 
-        login_user(novo_aluno)  # Agora pode logar o aluno
+        login_user(novo_aluno)
         flash('Aluno registrado com sucesso!', 'success')
 
         return redirect(url_for('homepage'))
@@ -53,21 +49,19 @@ def registrarAluno():
     return render_template("registro-aluno.html", form=form)
 
 # Registro do Professor
-@app.route("/registrarProfessor", methods=['GET', 'POST'])
+@app.route("/register/professor", methods=['GET', 'POST'])
 def registerProfessor():
     form = RegistrarProfessorForm()
 
     if form.validate_on_submit():
-        # Criptografar a senha
-        senha_hash = generate_password_hash(form.senha.data)
 
         novo_professor = Professor(
             nome=form.nome.data,
             email=form.email.data,
             telefone=form.telefone.data,
-            especialidade=form.especialidade.data,
-            senha=senha_hash  # Armazenando a senha criptografada
+            especialidade=form.especialidade.data
         )
+        novo_professor.set_senha(form.senha.data)  
 
         db.session.add(novo_professor)
         db.session.commit()
@@ -77,9 +71,10 @@ def registerProfessor():
 
         return redirect(url_for('areaProfessor'))
 
-    return render_template("registro-professor.html", form=form)
+    return render_template("registrarProfessor.html", form=form)
 
-@app.route("/loginAluno", methods=['GET', 'POST'])
+
+@app.route("/login/aluno", methods=['GET', 'POST'])
 def loginAluno():
     form = LoginAlunoForm()
 
@@ -89,7 +84,7 @@ def loginAluno():
 
         aluno = Aluno.query.filter_by(email=email).first()
 
-        if aluno and aluno.check_senha(senha):  
+        if aluno and aluno.check_senha(senha):
             login_user(aluno)
             return redirect(url_for('areaAluno'))
 
@@ -101,7 +96,8 @@ def loginAluno():
 
 
 
-@app.route('/loginProfessor', methods=['GET', 'POST'])
+
+@app.route('/login/professor', methods=['GET', 'POST'])
 def loginProfessor():
     form = LoginProfessorForm()
 
@@ -109,9 +105,13 @@ def loginProfessor():
         email = form.email.data
         senha = form.senha.data
 
+        if not email:  
+            flash('O email não pode ser vazio.', 'danger')
+            return redirect(url_for('loginProfessor'))
+        
         professor = Professor.query.filter_by(email=email).first()
 
-        if professor and professor.check_senha(senha): 
+        if professor and professor.check_senha(senha):
             login_user(professor)
             return redirect(url_for('areaProfessor'))
 
@@ -121,14 +121,14 @@ def loginProfessor():
     return render_template('loginProf.html', form=form)
 
 
-@app.route('/areaAluno', methods=['GET'])
+@app.route('/area/aluno', methods=['GET'])
 @login_required
 def areaAluno():
-    if not current_user.is_aluno(): 
+    if not current_user.id_aluno: 
         flash("Você precisa ser um aluno para acessar essa área.", "warning")
         return redirect(url_for("loginAluno"))
 
-    treinamentos = Treinamento.query.filter_by(aluno_id=current_user.id_aluno).all()
+    treinamentos = Treinamento.query.filter_by(id_aluno=current_user.id_aluno).all()
 
     return render_template("areaAluno.html", treinamentos=treinamentos, aluno=current_user)
 
@@ -142,10 +142,10 @@ def logout():
         return redirect(url_for("loginProfessor"))
     return redirect(url_for("loginAluno"))
 
-@app.route('/areaProfessor', methods=["GET", "POST"])
+@app.route('/area/professor', methods=["GET", "POST"])
 @login_required
 def areaProfessor():
-    if not current_user.is_professor(): 
+    if not isinstance(current_user, Aluno): 
         flash("Você precisa ser um professor para acessar esta área.", "warning")
         return redirect(url_for("loginProfessor"))
 
@@ -159,16 +159,24 @@ def enviarTreinamento():
     form = TreinamentoForm()
     form.id_aluno.choices = [(aluno.id_aluno, aluno.nome) for aluno in Aluno.query.all()]
 
+    # Verifica se o formulário foi enviado corretamente
     if form.validate_on_submit():
-        novo_Treinamento = Treinamento(
-            aluno_id=form.id_aluno.data,
-            treino=form.treino.data
-        )
-        db.session.add(novo_Treinamento)
-        db.session.commit()
+        # Se o current_user for um Professor, procede com o envio
+        if isinstance(current_user, Professor):  # Verifica se o current_user é um Professor
+            novo_Treinamento = Treinamento(
+                aluno_id=form.id_aluno.data,
+                id_professor=current_user.id_professor,
+                treino=form.treino.data
+            )
+            db.session.add(novo_Treinamento)
+            db.session.commit()
 
-        flash("Treinamento enviado com sucesso!", "success")
-        return redirect(url_for('areaProfessor'))
-
+            flash("Treinamento enviado com sucesso!", "success")
+            return redirect(url_for('areaProfessor'))
+        else:
+            flash("Somente um professor pode enviar treinamentos.", "danger")
+            return redirect(url_for('areaProfessor'))
+    
+    # Se o formulário não for válido, exibe a mensagem de erro
     flash("Erro ao enviar treinamento", "danger")
     return redirect(url_for('areaProfessor'))

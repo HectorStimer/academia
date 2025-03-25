@@ -11,16 +11,28 @@
 <body>
 
     <h1>Bem-vindo ao Dashboard, {{ professor.nome }}</h1>
+
+    {% if admin %}
+        <a href="{{url_for('Admin')}}">Area Administradiva</a>
     
     <h2>Enviar Treinamento para Aluno</h2>
-    <form action="{{ url_for('enviarTreinamento') }}" method="post">
+    <form action="{{ url_for('areaProfessor') }}" method="POST">
         {{ form.hidden_tag() }}
         <label for="id_aluno">{{ form.id_aluno.label }}</label>
         {{ form.id_aluno }}
         <label for="treino">{{ form.treino.label }}</label>
-         {{ form.treino }}
-        <button type="submit">{{ form.submit }}</button>
-     </form>
+        {{ form.treino }}
+        <button type="submit"></button>
+    </form>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 
     <h2>Estatísticas de Progresso dos Alunos</h2>
     <table>

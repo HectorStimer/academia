@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área de Pagamentos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='pagamentos.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Área de Pagamentos</h1>
+            <p>Bem-vindo, {{ aluno.nome }}!</p>
+        </header>
+
+        <section class="plano-info">
+            <h2>Plano Atual</h2>
+            <div class="plano-details">
+                <p><strong>Plano:</strong> {{ plano_atual.nomePlano }}</p>
+                <p><strong>Preço:</strong> R$ {{ plano_atual.preco }}</p>
+            </div>
+        </section>
+
+        <section class="troca-plano">
+            <h2>Trocar de Plano</h2>
+            <form method="POST">
+                <label for="plano_id">Escolha um novo plano:</label>
+                <select name="plano_id" id="plano_id" required>
+                    {% for plano in planos %}
+                        <option value="{{ plano.id_plano }}" {% if plano.id_plano == plano_atual.id_plano %}selected{% endif %}>
+                            {{ plano.nomePlano }} - R$ {{ plano.preco }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <button type="submit">Alterar Plano</button>
+            </form>
+        </section>
+
+        <section class="pagamentos">
+            <h2>Histórico de Pagamentos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Valor</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pagamento in pagamentos %}
+                        <tr>
+                            <td>{{ pagamento.data_pagamento }}</td>
+                            <td>R$ {{ pagamento.valor }}</td>
+                            <td>{{ pagamento.status }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>

@@ -1,24 +1,21 @@
-/* Resetando alguns estilos padrões */
+/* Reset básico */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Estilos gerais */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #f4f4f9;
     color: #333;
-    padding: 20px;
 }
 
 .container {
-    max-width: 900px;
+    width: 80%;
     margin: 0 auto;
-    background-color: white;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 header {
@@ -27,96 +24,133 @@ header {
 }
 
 header h1 {
-    font-size: 2rem;
-    color: #1a73e8;
+    font-size: 2em;
+    color: #007bff;
 }
 
 header p {
-    font-size: 1.1rem;
+    font-size: 1.2em;
+    color: #555;
 }
 
+/* Estilo do plano atual */
 .plano-info, .troca-plano, .pagamentos {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 
 h2 {
-    font-size: 1.5rem;
+    font-size: 1.8em;
     color: #333;
     margin-bottom: 10px;
 }
 
-.plano-details {
-    background-color: #f9f9f9;
-    padding: 10px;
-    border-radius: 5px;
-}
-
+/* Plano Atual */
 .plano-details p {
-    font-size: 1.1rem;
+    font-size: 1.2em;
+    color: #555;
 }
 
+/* Formulário para troca de plano */
 form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
 }
 
-select, button {
-    padding: 10px;
-    font-size: 1rem;
-    border-radius: 5px;
+form label {
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+form select {
+    padding: 8px;
+    margin-bottom: 10px;
+    font-size: 1em;
     border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
 }
 
-button {
-    background-color: #1a73e8;
-    color: white;
+form button {
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
     border: none;
+    font-size: 1.1em;
+    border-radius: 5px;
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #0056b3;
+form button:hover {
+    background-color: #218838;
 }
 
+/* Tabela de pagamentos */
 table {
     width: 100%;
     border-collapse: collapse;
+    background-color: #fff;
     margin-top: 20px;
 }
 
-table th, table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
 }
 
-table th {
-    background-color: #f4f4f4;
+th {
+    background-color: #007bff;
+    color: #fff;
 }
 
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+td button {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+td button:hover {
+    background-color: #0056b3;
+}
+
+td span {
+    color: #28a745;
+    font-weight: bold;
+}
+
+/* Mensagens Flash */
 .flash-messages {
     margin-top: 20px;
-    text-align: center;
 }
 
 .flash {
     padding: 10px;
+    margin: 10px 0;
     border-radius: 5px;
-    margin-bottom: 10px;
+    font-size: 1em;
+    color: #fff;
 }
 
 .flash.success {
-    background-color: #4caf50;
-    color: white;
-}
-
-.flash.warning {
-    background-color: #ff9800;
-    color: white;
+    background-color: #28a745;
 }
 
 .flash.error {
-    background-color: #f44336;
-    color: white;
+    background-color: #dc3545;
+}
+
+.flash.warning {
+    background-color: #ffc107;
+}
+
+.flash-info {
+    background-color: #17a2b8;
 }

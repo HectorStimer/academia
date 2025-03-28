@@ -1,31 +1,51 @@
-<!-- templates/dashboard_professor.html -->
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{url_for('static', filename='areaProfessor.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='areaProfessor.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Biblioteca para o gráfico -->
     <title>Dashboard do Professor</title>
 </head>
 <body>
-
     <h1>Bem-vindo ao Dashboard, {{ professor.nome }}</h1>
-
-    {% if admin %}
-        <a href="{{url_for('Admin')}}">Area Administradiva</a>
     
+    {% if admin %}
+        <a href="{{ url_for('Admin') }}">Área Administrativa</a>
+    {% endif %}
+
+    <!-- Formulário de Enviar Treinamento -->
     <h2>Enviar Treinamento para Aluno</h2>
     <form action="{{ url_for('areaProfessor') }}" method="POST">
-        {{ form.hidden_tag() }}
-        <label for="id_aluno">{{ form.id_aluno.label }}</label>
-        {{ form.id_aluno }}
-        <label for="treino">{{ form.treino.label }}</label>
-        {{ form.treino }}
-        <button type="submit"></button>
+        {{ form_treinamento.hidden_tag() }}
+        <label for="id_aluno">{{ form_treinamento.id_aluno.label }}</label>
+        {{ form_treinamento.id_aluno }}
+        <label for="treino">{{ form_treinamento.treino.label }}</label>
+        {{ form_treinamento.treino }}
+        <button type="submit">Enviar Treinamento</button>
     </form>
+
+    <!-- Formulário de Registrar Progresso -->
+    <h2>Registrar Progresso do Aluno</h2>
+    <form action="{{ url_for('areaProfessor') }}" method="POST">
+        {{ form_progresso.hidden_tag() }}
+        <label for="id_aluno">{{ form_progresso.id_aluno.label }}</label>
+        {{ form_progresso.id_aluno }}
+        <label for="peso">{{ form_progresso.peso.label }}</label>
+        {{ form_progresso.peso }}
+        <label for="altura">{{ form_progresso.altura.label }}</label>
+        {{ form_progresso.altura }}
+        <label for="percentual_gordura">{{ form_progresso.percentual_gordura.label }}</label>
+        {{ form_progresso.percentual_gordura }}
+        <label for="massa_muscular">{{ form_progresso.massa_muscular.label }}</label>
+        {{ form_progresso.massa_muscular }}
+        <label for="observacoes">{{ form_progresso.observacoes.label }}</label>
+        {{ form_progresso.observacoes }}
+        <button type="submit">Registrar Progresso</button>
+    </form>
+    
     {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
+        {% if messages %}
             <ul>
                 {% for category, message in messages %}
                     <li class="{{ category }}">{{ message }}</li>
@@ -33,7 +53,7 @@
             </ul>
         {% endif %}
     {% endwith %}
-
+    
     <h2>Estatísticas de Progresso dos Alunos</h2>
     <table>
         <thead>
@@ -47,11 +67,9 @@
                 <tr>
                     <td>{{ aluno.nome }}</td>
                     <td>
-                        {% if progresso_alunos[aluno.id_aluno] %}
+                        {% if aluno.id_aluno in progresso_alunos and progresso_alunos[aluno.id_aluno] %}
                             {% for p in progresso_alunos[aluno.id_aluno] %}
                                 <p>{{ p.progresso }}</p>
-                            {% else %}
-                                <p>Sem progresso registrado</p>
                             {% endfor %}
                         {% else %}
                             <p>Sem progresso registrado</p>
@@ -61,7 +79,46 @@
             {% endfor %}
         </tbody>
     </table>
+    
+    <h2>Gráfico de Resultados Antes e Depois</h2>
+    <canvas id="graficoProgresso"></canvas> <!-- Canvas onde o gráfico será desenhado -->
+
     <a href="{{ url_for('logout') }}">Logout</a>
 
+    <script>
+        // Dados de exemplo para o gráfico. Você deve passar esses dados do back-end
+        const dadosProgresso = {
+            labels: ['Antes', 'Depois'],
+            datasets: [{
+                label: 'Peso (kg)',
+                data: [70, 65], // Exemplo de peso, substitua pelos dados reais
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            },
+            {
+                label: 'Percentual de Gordura (%)',
+                data: [20, 15], // Exemplo de percentual de gordura
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        };
+
+        // Criando o gráfico no canvas
+        const ctx = document.getElementById('graficoProgresso').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar', // Tipo de gráfico (barras, linhas, etc)
+            data: dadosProgresso,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>

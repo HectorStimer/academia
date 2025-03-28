@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='admin.css')}}">
+    <title>Administrativa</title>
+</head>
+<body>
+    <ul>
+        {% for pagamento in pagamentos %}
+            <li>
+                <strong>Auno:</strong> {{ pagamento.aluno.nome }} <br>
+                <strong>Valor:</strong> {{ pagamento.valor}}
+                <strong>Data:</strong> {{ pagamento.data_pagamento}}
+            </li>
+        {% else %}
+            <p>Você ainda não recebeu nenhum pagamento.</p>
+        {% endfor %}
+    </ul>
+
+    
+</body>
+</html>

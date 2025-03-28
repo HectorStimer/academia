@@ -44,3 +44,12 @@ class receberTreinamentoForm(FlaskForm):
     id_professor = StringField()
     Treinamento = TextAreaField()
 
+
+class ProgressoForm(FlaskForm):
+    id_aluno = StringField('ID do Aluno', validators=[DataRequired()])
+    peso = DecimalField('Peso (kg)', validators=[Optional()], places=2)
+    altura = DecimalField('Altura (m)', validators=[Optional()], places=2)
+    percentual_gordura = DecimalField('Percentual de Gordura (%)', validators=[Optional()], places=2)
+    massa_muscular = DecimalField('Massa Muscular (kg)', validators=[Optional()], places=2)
+    observacoes = TextAreaField('Observações', validators=[Optional()])
+    submit = SubmitField('Registrar Progresso')

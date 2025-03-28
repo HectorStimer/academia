@@ -122,6 +122,10 @@ def loginAluno():
 
         aluno = Aluno.query.filter_by(email=email).first()
 
+        if not aluno:
+            flash('esse usuario nao existe')
+            return redirect(url_for('loginAluno'))
+
         if aluno and aluno.check_senha(senha):
             login_user(aluno)
             return redirect(url_for('areaAluno'))
@@ -148,6 +152,10 @@ def loginProfessor():
             return redirect(url_for('loginProfessor'))
         
         professor = Professor.query.filter_by(email=email).first()
+
+        if not professor:
+            flash('esse usuario nao existe')
+            return redirect(url_for('loginProfessor'))
 
         if professor and professor.check_senha(senha):
             login_user(professor)
@@ -218,34 +226,84 @@ def logout():
 @app.route('/area/professor', methods=["GET", "POST"])
 @login_required
 def areaProfessor():
-
-    admin = Administrador.query.filter_by(id_professor=current_user.id_professor).first()
-
-
+    # Verifica se o usuário logado é um professor
     if isinstance(current_user, Aluno): 
         flash("Você precisa ser um professor para acessar esta área.", "warning")
         return redirect(url_for("loginProfessor"))
 
-    form = TreinamentoForm()
-    form.id_aluno.choices = [(aluno.id_aluno, aluno.nome) for aluno in Aluno.query.all()]
+    # Verifica se o professor é administrador
+    admin = Administrador.query.filter_by(id_professor=current_user.id_professor).first()
 
-    
-    if form.validate_on_submit():
-        print("Formulário validado com sucesso!") 
-        novo_Treinamento = Treinamento(
-            id_aluno=form.id_aluno.data,
+    # Formulário de Treinamento
+    form_treinamento = TreinamentoForm()
+    form_treinamento.id_aluno.choices = [(aluno.id_aluno, aluno.nome) for aluno in Aluno.query.all()]
+
+    # Formulário de Progresso
+    form_progresso = ProgressoForm()
+    form_progresso.id_aluno.choices = [(aluno.id_aluno, aluno.nome) for aluno in Aluno.query.all()]
+
+    # Processa o formulário de treinamento
+    if form_treinamento.validate_on_submit():
+        print("Formulário de Treinamento validado com sucesso!")
+        novo_treinamento = Treinamento(
+            id_aluno=form_treinamento.id_aluno.data,
             id_professor=current_user.id_professor, 
-            treino=form.treino.data
+            treino=form_treinamento.treino.data
         )
-        flash("Treinamento enviado ")
 
-
-        db.session.add(novo_Treinamento)
+        db.session.add(novo_treinamento)
         db.session.commit()
+        flash("Treinamento enviado com sucesso!", "success")
 
-    
+    # Processa o formulário de progresso
+    if form_progresso.validate_on_submit():
+        progresso = Progresso(
+            id_aluno=form_progresso.id_aluno.data,
+            peso=form_progresso.peso.data,
+            altura=form_progresso.altura.data,
+            percentual_gordura=form_progresso.percentual_gordura.data,
+            massa_muscular=form_progresso.massa_muscular.data,
+            observacoes=form_progresso.observacoes.data
+        )
 
-    return render_template('areaProfessor.html', professor=current_user, form=form, admin=admin)
+        db.session.add(progresso)
+        db.session.commit()
+        flash("Progresso registrado com sucesso!", "success")
+
+    # Processa os dados de progresso dos alunos para exibir no gráfico
+    progresso_alunos = {aluno.id_aluno: aluno.progressos for aluno in Aluno.query.all()}
+
+    dados_grafico = {
+        'labels': ['Antes', 'Depois'],
+        'datasets': []
+    }
+
+    # Itera sobre os alunos para criar os dados do gráfico
+    for aluno in Aluno.query.all():
+        if aluno.progressos:  # Verifica se há progresso registrado para o aluno
+            progresso_antes = aluno.progresso[0]  # Primeiro progresso
+            progresso_depois = aluno.progresso[-1]  # Último progresso
+
+            # Adiciona dados para o gráfico do aluno
+            dados_grafico['datasets'].append({
+                'label': f'{aluno.nome} - Peso (kg)',
+                'data': [progresso_antes.peso, progresso_depois.peso],  # Peso antes e depois
+                'backgroundColor': 'rgba(54, 162, 235, 0.2)',
+                'borderColor': 'rgba(54, 162, 235, 1)',
+                'borderWidth': 1
+            })
+            dados_grafico['datasets'].append({
+                'label': f'{aluno.nome} - Percentual de Gordura (%)',
+                'data': [progresso_antes.percentual_gordura, progresso_depois.percentual_gordura],  # Gordura antes e depois
+                'backgroundColor': 'rgba(255, 99, 132, 0.2)',
+                'borderColor': 'rgba(255, 99, 132, 1)',
+                'borderWidth': 1
+            })
+
+    return render_template('areaProfessor.html', professor=current_user, 
+                           form_treinamento=form_treinamento, form_progresso=form_progresso, 
+                           admin=admin, dados_grafico=dados_grafico)
+
 
 @app.route("/administracao")
 @login_required
@@ -256,5 +314,5 @@ def Admin():
         flash("Você não é um administrador para entrar nessa área!", "danger")
         return redirect(url_for('loginAluno'))
 
-    return render_template("areaAdmin.html")
+    return render_template("admin.html")
 

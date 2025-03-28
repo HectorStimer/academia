@@ -13,6 +13,7 @@ class Aluno(db.Model, UserMixin):
     data_nascimento = db.Column(db.Date)
     plano_id = db.Column(db.Integer, db.ForeignKey('planos.id_plano'), nullable=False)
     senha_hash = db.Column(db.String(255), nullable=False) 
+    status = db.Column(db.Boolean, default=False)
 
     def set_senha(self, senha):
         
@@ -73,13 +74,22 @@ class Plano(db.Model, UserMixin):
     preco = db.Column(db.Numeric(10, 2), nullable=False)
 
 class Progresso(db.Model, UserMixin):
-    __tablename__ = 'progresso'
+    __tablename__ = 'progressos'
     
     id_progresso = db.Column(db.Integer, primary_key=True, autoincrement=True)
     id_aluno = db.Column(db.Integer, db.ForeignKey('alunos.id_aluno'), nullable=False)
-    progresso = db.Column(db.String(200), nullable=True)
+    data_atualizacao = db.Column(db.DateTime, default=db.func.current_timestamp(), nullable=False)
+    peso = db.Column(db.Numeric(5, 2), nullable=True)  # Exemplo: 70.5 kg
+    altura = db.Column(db.Numeric(4, 2), nullable=True)  # Exemplo: 1.75 m
+    percentual_gordura = db.Column(db.Numeric(5, 2), nullable=True)  # Exemplo: 18.5%
+    massa_muscular = db.Column(db.Numeric(5, 2), nullable=True)  # Exemplo: 55.0 kg
+    observacoes = db.Column(db.Text, nullable=True)  # Comentários sobre o progresso
 
-    aluno = db.relationship('Aluno', backref=db.backref('progresso', lazy=True))
+    aluno = db.relationship('Aluno', backref=db.backref('progressos', lazy=True, cascade="all, delete-orphan"))
+
+    def __repr__(self):
+        return f'<Progresso {self.id_progresso} - Aluno {self.id_aluno}>'
+
 
 class Administrador(db.Model, UserMixin):
     __tablename__ = "administrador"

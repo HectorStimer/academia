@@ -46,10 +46,16 @@ class receberTreinamentoForm(FlaskForm):
 
 
 class ProgressoForm(FlaskForm):
-    id_aluno = StringField('ID do Aluno', validators=[DataRequired()])
+    id_aluno = SelectField('ID do Aluno', validators=[DataRequired()])
     peso = DecimalField('Peso (kg)', validators=[Optional()], places=2)
     altura = DecimalField('Altura (m)', validators=[Optional()], places=2)
-    percentual_gordura = DecimalField('Percentual de Gordura (%)', validators=[Optional()], places=2)
-    massa_muscular = DecimalField('Massa Muscular (kg)', validators=[Optional()], places=2)
+    bracoE = DecimalField('Braço Esquerdo (cm)', validators=[Optional()], places=2)
+    bracoD = DecimalField('Braço Direito (cm)', validators=[Optional()], places=2)
+    panturrilhaE = DecimalField('Panturrilha Esquerda (cm)', validators=[Optional()], places=2)
+    panturrilhaD = DecimalField('Panturrilha Direita (cm)', validators=[Optional()], places=2)
+    torax = DecimalField('Tórax (cm)', validators=[Optional()], places=2)
+    cintura = DecimalField('Cintura (cm)', validators=[Optional()], places=2)
+    coxaE = DecimalField('Coxa Esquerda (cm)', validators=[Optional()], places=2)
+    coxaD = DecimalField('Coxa Direita (cm)', validators=[Optional()], places=2)
     observacoes = TextAreaField('Observações', validators=[Optional()])
     submit = SubmitField('Registrar Progresso')

@@ -1,6 +1,5 @@
 from flask import render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, login_required, current_user, logout_user
-from werkzeug.security import check_password_hash, generate_password_hash
 from main import app, lm, db
 from models import *
 from forms import *
@@ -82,7 +81,7 @@ def registrarAluno():
         login_user(novo_aluno)
         flash('Aluno registrado com sucesso!', 'success')
 
-        return redirect(url_for('homepage'))
+        return redirect(url_for('areaAluno'))
 
     return render_template("registro-aluno.html", form=form)
 
@@ -224,8 +223,9 @@ def logout():
 
 
 @app.route('/area/professor', methods=["GET", "POST"])
+@app.route('/area/professor/<int:id_aluno>', methods=["GET", "POST"])
 @login_required
-def areaProfessor():
+def areaProfessor(id_aluno=None):
     # Verifica se o usuário logado é um professor
     if isinstance(current_user, Aluno): 
         flash("Você precisa ser um professor para acessar esta área.", "warning")
@@ -244,16 +244,15 @@ def areaProfessor():
 
     # Processa o formulário de treinamento
     if form_treinamento.validate_on_submit():
-        print("Formulário de Treinamento validado com sucesso!")
         novo_treinamento = Treinamento(
             id_aluno=form_treinamento.id_aluno.data,
             id_professor=current_user.id_professor, 
             treino=form_treinamento.treino.data
         )
-
         db.session.add(novo_treinamento)
         db.session.commit()
         flash("Treinamento enviado com sucesso!", "success")
+        return redirect(url_for("areaProfessor"))
 
     # Processa o formulário de progresso
     if form_progresso.validate_on_submit():
@@ -261,40 +260,60 @@ def areaProfessor():
             id_aluno=form_progresso.id_aluno.data,
             peso=form_progresso.peso.data,
             altura=form_progresso.altura.data,
-            percentual_gordura=form_progresso.percentual_gordura.data,
-            massa_muscular=form_progresso.massa_muscular.data,
+            bracoE=form_progresso.bracoE.data,
+            bracoD=form_progresso.bracoD.data,
+            panturrilhaE=form_progresso.panturrilhaE.data,
+            panturrilhaD=form_progresso.panturrilhaD.data,
+            coxaE=form_progresso.coxaE.data,
+            coxaD=form_progresso.coxaD.data,
+            torax=form_progresso.torax.data,
+            cintura=form_progresso.cintura.data,
             observacoes=form_progresso.observacoes.data
         )
-
         db.session.add(progresso)
         db.session.commit()
         flash("Progresso registrado com sucesso!", "success")
+        return redirect(url_for("areaProfessor", id_aluno=progresso.id_aluno))
 
-    # Processa os dados de progresso dos alunos para exibir no gráfico
-    progresso_alunos = {aluno.id_aluno: aluno.progressos for aluno in Aluno.query.all()}
-
+    # Dados do gráfico
     dados_grafico = {
         'labels': ['Antes', 'Depois'],
         'datasets': []
     }
 
-    # Itera sobre os alunos para criar os dados do gráfico
-    for aluno in Aluno.query.all():
-        if aluno.progressos:  # Verifica se há progresso registrado para o aluno
-            progresso_antes = aluno.progresso[0]  # Primeiro progresso
-            progresso_depois = aluno.progresso[-1]  # Último progresso
+    if id_aluno:  # Filtra os dados apenas do aluno selecionado
+        aluno = Aluno.query.get(id_aluno)
+        if aluno and aluno.progressos and len(aluno.progressos) >= 2:
+            progresso_antes = aluno.progressos[0]
+            progresso_depois = aluno.progressos[-1]
 
-            # Adiciona dados para o gráfico do aluno
+            medidas_antes = [
+                progresso_antes.bracoE, progresso_antes.bracoD, progresso_antes.panturrilhaE,
+                progresso_antes.panturrilhaD, progresso_antes.coxaE, progresso_antes.coxaD,
+                progresso_antes.torax, progresso_antes.cintura
+            ]
+            medidas_depois = [
+                progresso_depois.bracoE, progresso_depois.bracoD, progresso_depois.panturrilhaE,
+                progresso_depois.panturrilhaD, progresso_depois.coxaE, progresso_depois.coxaD,
+                progresso_depois.torax, progresso_depois.cintura
+            ]
+
+            medidas_antes = [m for m in medidas_antes if m is not None]
+            medidas_depois = [m for m in medidas_depois if m is not None]
+
+            media_antes = sum(medidas_antes) / len(medidas_antes) if medidas_antes else 0
+            media_depois = sum(medidas_depois) / len(medidas_depois) if medidas_depois else 0
+
             dados_grafico['datasets'].append({
                 'label': f'{aluno.nome} - Peso (kg)',
-                'data': [progresso_antes.peso, progresso_depois.peso],  # Peso antes e depois
+                'data': [progresso_antes.peso, progresso_depois.peso],
                 'backgroundColor': 'rgba(54, 162, 235, 0.2)',
                 'borderColor': 'rgba(54, 162, 235, 1)',
                 'borderWidth': 1
             })
             dados_grafico['datasets'].append({
-                'label': f'{aluno.nome} - Percentual de Gordura (%)',
-                'data': [progresso_antes.percentual_gordura, progresso_depois.percentual_gordura],  # Gordura antes e depois
+                'label': f'{aluno.nome} - Média das Medidas (cm)',
+                'data': [media_antes, media_depois],
                 'backgroundColor': 'rgba(255, 99, 132, 0.2)',
                 'borderColor': 'rgba(255, 99, 132, 1)',
                 'borderWidth': 1
@@ -302,7 +321,8 @@ def areaProfessor():
 
     return render_template('areaProfessor.html', professor=current_user, 
                            form_treinamento=form_treinamento, form_progresso=form_progresso, 
-                           admin=admin, dados_grafico=dados_grafico)
+                           admin=admin, dados_grafico=dados_grafico, id_aluno=id_aluno)
+
 
 
 @app.route("/administracao")

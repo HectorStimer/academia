@@ -1,60 +1,73 @@
+/* Estilização geral */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
+    margin: 20px;
     padding: 0;
+    background-color: #f4f4f4;
     text-align: center;
 }
 
-h1 {
-    background-color: #007bff;
-    color: white;
-    padding: 20px;
-    margin: 0;
-}
-
-h2 {
+h1, h2 {
     color: #333;
-    margin-top: 20px;
 }
 
+/* Links */
+a {
+    text-decoration: none;
+    color: #007BFF;
+    font-weight: bold;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+/* Formulários */
 form {
-    background: white;
+    background: #fff;
     padding: 20px;
     margin: 20px auto;
-    width: 50%;
-    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 label {
     display: block;
-    margin: 10px 0 5px;
     font-weight: bold;
+    margin-top: 10px;
+    text-align: left;
 }
 
-select, input, button {
+input, select, textarea {
     width: 100%;
     padding: 10px;
-    margin-bottom: 15px;
+    margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
 button {
-    background-color: #007bff;
+    background-color: #28a745;
     color: white;
-    font-size: 16px;
     border: none;
+    padding: 10px;
+    width: 100%;
+    margin-top: 10px;
     cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #218838;
 }
 
+/* Tabela */
 table {
-    width: 80%;
+    width: 90%;
+    max-width: 800px;
     margin: 20px auto;
     border-collapse: collapse;
     background: white;
@@ -62,16 +75,53 @@ table {
 }
 
 thead {
-    background-color: #007bff;
+    background: #007BFF;
     color: white;
 }
 
-td, th {
-    border: 1px solid #ddd;
+th, td {
     padding: 10px;
+    border: 1px solid #ddd;
     text-align: left;
 }
 
-tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
+tr:nth-child(even) {
+    background: #f2f2f2;
+}
+
+/* Mensagens Flash */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li.success {
+    background: #d4edda;
+    color: #155724;
+    padding: 10px;
+    margin: 10px auto;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 5px;
+}
+
+li.warning {
+    background: #fff3cd;
+    color: #856404;
+    padding: 10px;
+    margin: 10px auto;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 5px;
+}
+
+/* Gráfico */
+canvas {
+    max-width: 600px;
+    margin: 20px auto;
+    display: block;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }

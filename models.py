@@ -81,8 +81,14 @@ class Progresso(db.Model, UserMixin):
     data_atualizacao = db.Column(db.DateTime, default=db.func.current_timestamp(), nullable=False)
     peso = db.Column(db.Numeric(5, 2), nullable=True)  # Exemplo: 70.5 kg
     altura = db.Column(db.Numeric(4, 2), nullable=True)  # Exemplo: 1.75 m
-    percentual_gordura = db.Column(db.Numeric(5, 2), nullable=True)  # Exemplo: 18.5%
-    massa_muscular = db.Column(db.Numeric(5, 2), nullable=True)  # Exemplo: 55.0 kg
+    bracoE = db.Column(db.Numeric(4,2), nullable= True)
+    bracoD = db.Column(db.Numeric(4,2), nullable= True)
+    panturrilhaE = db.Column(db.Numeric(4,2), nullable= True)
+    panturrilhaD = db.Column(db.Numeric(4,2), nullable= True)
+    coxaE = db.Column(db.Numeric(4,2), nullable= True)
+    coxaD = db.Column(db.Numeric(4,2), nullable= True)
+    torax = db.Column(db.Numeric(4,2), nullable= True)
+    cintura = db.Column(db.Numeric(4,2), nullable= True)
     observacoes = db.Column(db.Text, nullable=True)  # Comentários sobre o progresso
 
     aluno = db.relationship('Aluno', backref=db.backref('progressos', lazy=True, cascade="all, delete-orphan"))

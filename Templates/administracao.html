@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='areaProfessor.css') }}">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Área de Administração</h1>
+    <form method="POST" action="{{ url_for('Admin') }}">
+        {{ form.hidden_tag() }}
+        <div>
+            <label for="aluno_id">Selecione o Aluno:</label>
+            {{ form.aluno_id(class="form-control") }}
+        </div>
+        <div>
+            <label for="nome">Nome:</label>
+            {{ form.nome(class="form-control") }}
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            {{ form.email(class="form-control") }}
+        </div>
+        <div>
+            <label for="status">Status:</label>
+            {{ form.status(class="form-control") }}
+        </div>
+        <div>
+            <label for="pagamento">Pagamento:</label>
+            {{ form.pagamento(class="form-control") }}
+        </div>
+        <div>
+            <label for="senha">Nova Senha (opcional):</label>
+            {{ form.senha(class="form-control") }}
+        </div>
+        <button type="submit" class="btn btn-primary">Atualizar</button>
+    </form>
+</body>
+</html>

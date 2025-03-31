@@ -325,14 +325,42 @@ def areaProfessor(id_aluno=None):
 
 
 
-@app.route("/administracao")
+@app.route("/administracao", methods=["GET", "POST"])
 @login_required
 def Admin():
     admin = Administrador.query.filter_by(id_professor=current_user.id_professor).first()
 
     if not admin:
-        flash("Você não é um administrador para entrar nessa área!", "danger")
-        return redirect(url_for('loginAluno'))
+        flash("Você não tem permissão para acessar esta área.", "warning")
+        return redirect(url_for("areaProfessor"))
 
-    return render_template("admin.html")
+    form = AdminForm()
+    form.aluno_id.choices = [(aluno.id_aluno, aluno.nome) for aluno in Aluno.query.all()]
 
+    if form.validate_on_submit():
+        aluno_id = form.aluno_id.data
+        aluno = Aluno.query.get(aluno_id)
+
+        if aluno:
+            # Atualiza os dados do aluno
+            aluno.nome = form.nome.data
+            aluno.email = form.email.data
+            aluno.status = form.status.data
+            aluno.pagamento = form.pagamento.data
+
+            # Atualiza a senha com hash
+            if form.senha.data:
+                aluno.set_senha(form.senha.data)
+
+            try:
+                db.session.commit()
+                flash(f"Dados do aluno {aluno.nome} atualizados com sucesso!", "success")
+            except Exception as e:
+                db.session.rollback()
+                flash("Erro ao atualizar os dados do aluno. Tente novamente.", "danger")
+        else:
+            flash("Aluno não encontrado.", "danger")
+
+        return redirect(url_for('Admin'))
+
+    return render_template('administracao.html', form=form, admin=admin)

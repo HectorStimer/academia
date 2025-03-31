@@ -59,3 +59,12 @@ class ProgressoForm(FlaskForm):
     coxaD = DecimalField('Coxa Direita (cm)', validators=[Optional()], places=2)
     observacoes = TextAreaField('Observações', validators=[Optional()])
     submit = SubmitField('Registrar Progresso')
+
+class AdminForm(FlaskForm):
+    aluno_id = SelectField("Aluno", coerce=int, validators=[DataRequired()])  # Campo para selecionar o aluno
+    nome = StringField("Nome", validators=[DataRequired(), Length(min=2, max=100)])
+    senha = StringField("Senha", validators=[DataRequired(), Length(min=6, max=30)])
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    status = SelectField("Status", choices=[("ativo", "Ativo"), ("inativo", "Inativo")])
+    pagamento = SelectField("Pagamento", choices=[("pago", "Pago"), ("pendente", "Pendente")])
+    submit = SubmitField("Atualizar")

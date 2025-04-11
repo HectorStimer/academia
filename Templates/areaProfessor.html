@@ -8,14 +8,18 @@
     <title>Dashboard do Professor</title>
 </head>
 <body>
-    <h1>Bem-vindo ao Dashboard, {{ professor.nome }}</h1>
-    
-    {% if admin %}
-        <a href="{{ url_for('Admin') }}">Área Administrativa</a>
-    {% endif %}
+    <header class="header">
+        <h1>Bem-vindo, {{ professor.nome }}</h1>
+        <div class="header-buttons">
+            {% if admin %}
+                <a href="{{ url_for('admin.admin_dashboard') }}" class="button">Área Administrativa</a>
+            {% endif %}
+            <a href="{{ url_for('logout.logout') }}" class="button">Logout</a>
+        </div>
+    </header>
 
     <h2>Enviar Treinamento para Aluno</h2>
-    <form action="{{ url_for('areaProfessor') }}" method="POST">
+    <form action="{{ url_for('area_professor.area_professor') }}" method="POST">
         {{ form_treinamento.hidden_tag() }}
         <label for="id_aluno">{{ form_treinamento.id_aluno.label }}</label>
         {{ form_treinamento.id_aluno }}
@@ -25,10 +29,10 @@
     </form>
 
     <h2>Registrar Progresso do Aluno</h2>
-    <form action="{{ url_for('areaProfessor') }}" method="POST">
+    <form action="{{ url_for('area_professor.area_professor') }}" method="POST">
         {{ form_progresso.hidden_tag() }}
         <label for="id_aluno">{{ form_progresso.id_aluno.label }}</label>
-        {{ form_progresso.id_aluno }}
+        {{ form_progresso.id_aluno(id="selectAluno", onchange="atualizarGrafico(this.value)") }}
         <label for="peso">{{ form_progresso.peso.label }}</label>
         {{ form_progresso.peso }}
         <label for="altura">{{ form_progresso.altura.label }}</label>
@@ -53,6 +57,12 @@
         {{ form_progresso.observacoes }}
         <button type="submit">Registrar Progresso</button>
     </form>
+
+    <h2>Gráfico de Progresso do Aluno</h2>
+    <div>
+        <h3>Progresso do Aluno</h3>
+        <canvas id="graficoProgresso"></canvas>
+    </div>
     
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -91,26 +101,56 @@
     </table>
     
     <h2>Gráfico de Resultados Antes e Depois</h2>
-    <canvas id="graficoProgresso"></canvas>
-
-    <a href="{{ url_for('logout') }}">Logout</a>
+    <div>
+        <h3>Progresso do Aluno</h3>
+        <canvas id="graficoProgresso"></canvas>
+    </div>
 
     <script>
-        const dadosProgresso = {{ dados_grafico | tojson }};
-
         const ctx = document.getElementById('graficoProgresso').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: dadosProgresso,
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
+        let graficoProgresso = null;
+
+        // Função para criar ou atualizar o gráfico
+        function criarOuAtualizarGrafico(labels, datasets) {
+            if (graficoProgresso) {
+                graficoProgresso.destroy(); // Destroi o gráfico existente
+            }
+
+            graficoProgresso = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Progresso do Aluno'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
+
+        // Função para atualizar o gráfico ao selecionar um aluno
+        function atualizarGrafico(idAluno) {
+            fetch(`/area/professor/${idAluno}`) // Faz uma requisição para obter os dados do aluno
+                .then(response => response.json())
+                .then(data => {
+                    criarOuAtualizarGrafico(data.labels, data.datasets);
+                })
+                .catch(error => console.error('Erro ao atualizar o gráfico:', error));
+        }
     </script>
 </body>
 </html>

@@ -11,7 +11,7 @@
     <div class="login-container">
         <h1>Login - Professor</h1>
 
-        <form action="{{ url_for('loginProfessor') }}" method="POST">
+        <form action="{{ url_for('login_professor.loginProfessor') }}" method="POST">
             {{ form.hidden_tag() }}
             
             <label for="emailForm">Email:</label>
@@ -21,7 +21,7 @@
         
             <button type="submit">Entrar</button>
 
-            <p>O professor nao possui conta? Acesse: <a href="{{url_for('registerProfessor')}}"></a></p>
+            <p>O professor nao possui conta? Acesse: <a href="{{url_for('registra_professor.registerProfessor')}}">clique aqui</a></p>
         </form>
 
         {% with messages = get_flashed_messages(with_categories=true) %}

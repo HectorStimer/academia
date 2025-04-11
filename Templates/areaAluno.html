@@ -7,8 +7,13 @@
     <link rel="stylesheet" href="{{url_for('static', filename='areaAluno.css')}}">
 </head>
 <body>
-    
-    <h1>Bem-vindo, {{ aluno.nome }}</h1>
+    <header class="header">
+        <h1>Olá, {{ aluno.nome }}</h1>
+        <div class="header-buttons">
+            <a href="{{ url_for('pagamentos.pagamento') }}" class="button">Área de Pagamento</a>
+            <a href="{{ url_for('logout.logout') }}" class="button">Logout</a>
+        </div>
+    </header>
 
     <h2>Seus Treinamentos</h2>
     <ul>
@@ -22,11 +27,76 @@
         {% endfor %}
     </ul>
 
-    
-    <a href="{{url_for('pagamento')}}">Area de pagamento</a>
+    <div style="width: 100%; max-width: 800px; margin: 0 auto;">
+        <div class="chart-container">
+            <h3>Seu Progresso</h3>
+            <canvas id="graficoProgressoAluno"></canvas>
+        </div>
+    </div>
 
-
-    
-    <a href="{{ url_for('logout') }}">Logout</a>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctxAluno = document.getElementById('graficoProgressoAluno').getContext('2d');
+        const dadosGraficoAluno = {{ dados_grafico|tojson }};
+        
+        new Chart(ctxAluno, {
+            type: 'line',
+            data: {
+                labels: dadosGraficoAluno.labels,
+                datasets: dadosGraficoAluno.datasets
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true, // Garante que o gráfico mantenha a proporção
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            color: '#e0e0e0', // Cor do texto da legenda
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Progresso do Aluno',
+                        color: '#00d4ff', // Cor do título
+                        font: {
+                            size: 18,
+                            weight: 'bold'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#e0e0e0' // Cor dos rótulos do eixo X
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)' // Cor da grade do eixo X
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#e0e0e0' // Cor dos rótulos do eixo Y
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)' // Cor da grade do eixo Y
+                        }
+                    }
+                },
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 10,
+                        top: 10,
+                        bottom: 10
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>

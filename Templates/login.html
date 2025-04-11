@@ -13,7 +13,7 @@
 
     <h1>login</h1>
 
-    <form action="{{url_for('loginAluno')}}" id="register" method="post">
+    <form action="{{url_for('login_aluno.loginAluno')}}" id="register" method="post">
 
         {{form.hidden_tag()}}
         <label for="email">Email: </label> 
@@ -24,7 +24,7 @@
 
         <button type="submit">Entrar</button>
         
-        <p>Ainda nao tem uma conta?<a href="{{url_for('registrarAluno')}}">Entre aqui</a></p>
+        <p>Ainda nao tem uma conta?<a href="{{url_for('registrar_aluno.registrarAluno')}}">Entre aqui</a></p>
     </form>
 
     {% with messages = get_flashed_messages(with_categories=true) %}

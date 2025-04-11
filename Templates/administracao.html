@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Área de Administração</h1>
-    <form method="POST" action="{{ url_for('Admin') }}">
+    <form method="POST" action="{{ url_for('admin.admin_dashboard') }}">
         {{ form.hidden_tag() }}
         <div>
             <label for="aluno_id">Selecione o Aluno:</label>

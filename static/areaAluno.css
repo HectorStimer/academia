@@ -1,56 +1,258 @@
+/* Estilo geral */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
+    background-color: #1b1f38; /* Fundo escuro estilo Hydra */
+    color: #e0e0e0; /* Texto claro */
     margin: 0;
     padding: 0;
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
     text-align: center;
-}
-
-h1 {
-    color: #333;
-    margin-top: 20px;
-}
-
-h2 {
-    color: #555;
-    margin-top: 15px;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-li {
-    background: white;
-    margin: 10px auto;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    max-width: 500px;
-    text-align: left;
-}
-
-strong {
-    color: #333;
-}
-
-p {
-    color: #777;
+    color: #00d4ff; /* Azul vibrante */
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 a {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 20px;
     text-decoration: none;
-    background: #007BFF;
-    color: white;
-    border-radius: 5px;
-    transition: 0.3s;
+    color: #00d4ff;
+    font-weight: bold;
+    transition: color 0.3s ease;
 }
 
 a:hover {
-    background: #0056b3;
+    color: #00a3cc;
+}
+
+/* Header */
+.header {
+    display: flex;
+    flex-wrap: wrap; /* Permite que os elementos quebrem linha em telas menores */
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 20px; /* Adiciona espaçamento interno */
+    background: #252a48; /* Fundo escuro */
+    border-bottom: 2px solid #00d4ff; /* Linha inferior */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box; /* Inclui padding na largura total */
+}
+
+.header h1 {
+    color: #00d4ff; /* Azul vibrante */
+    font-size: 20px;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap; /* Evita quebra de linha no texto */
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px; /* Espaçamento entre os botões */
+    flex-wrap: wrap; /* Permite que os botões quebrem linha em telas menores */
+    justify-content: flex-end; /* Alinha os botões à direita */
+}
+
+.header-buttons .button {
+    padding: 8px 15px; /* Ajusta o tamanho dos botões */
+    background: #00d4ff;
+    color: #1b1f38;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.header-buttons .button:hover {
+    background: #00a3cc; /* Efeito hover */
+    transform: translateY(-2px); /* Efeito de elevação */
+}
+
+/* Container principal */
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #252a48; /* Fundo secundário escuro */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Lista de treinamentos */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+ul li {
+    background: #2d335b; /* Fundo dos itens */
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: #e0e0e0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+ul li:hover {
+    transform: translateY(-3px); /* Efeito de elevação */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+ul li strong {
+    color: #00d4ff; /* Destaque para os títulos */
+}
+
+/* Botões */
+a.button {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    background: #00d4ff;
+    color: #1b1f38;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+a.button:hover {
+    background: #00a3cc; /* Efeito hover */
+    transform: translateY(-2px); /* Efeito de elevação */
+}
+
+/* Estilo para o gráfico */
+canvas {
+    display: block;
+    max-width: 100%; /* O canvas ocupará 100% da largura do contêiner */
+    height: 400px; /* Define uma altura fixa para o gráfico */
+    background: #252a48; /* Fundo escuro para o gráfico */
+    border-radius: 8px;
+    margin-top: 10px; /* Espaçamento entre o título e o gráfico */
+}
+
+/* Contêiner do gráfico */
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px; /* Limita a largura máxima */
+    margin: 20px auto; /* Centraliza o gráfico */
+    padding: 20px;
+    background: #2d335b; /* Fundo do contêiner */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex; /* Adiciona flexbox */
+    flex-direction: column; /* Organiza os elementos verticalmente */
+    align-items: center; /* Centraliza horizontalmente */
+    justify-content: center; /* Centraliza verticalmente */
+    text-align: center; /* Centraliza o texto */
+    height: auto; /* Remove qualquer altura fixa */
+}
+
+/* Ajustes para o título do gráfico */
+.chart-container h3 {
+    color: #00d4ff; /* Azul vibrante */
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Ajustes para tablets */
+@media (max-width: 768px) {
+    .chart-container {
+        max-width: 100%; /* Usa toda a largura disponível */
+        padding: 15px;
+    }
+
+    .chart-container h3 {
+        font-size: 18px; /* Reduz o tamanho do título */
+    }
+
+    ul li {
+        padding: 10px;
+    }
+
+    .header {
+        flex-direction: column; /* Organiza os elementos verticalmente */
+        align-items: center; /* Centraliza os elementos */
+        text-align: center;
+    }
+
+    .header h1 {
+        font-size: 18px; /* Reduz o tamanho do texto */
+        margin-bottom: 10px; /* Adiciona espaçamento abaixo do título */
+    }
+
+    .header-buttons {
+        justify-content: center; /* Centraliza os botões */
+        width: 100%; /* Faz os botões ocuparem toda a largura */
+    }
+
+    .header-buttons .button {
+        flex: 1; /* Faz os botões ocuparem o mesmo espaço */
+        max-width: 150px; /* Limita a largura máxima dos botões */
+    }
+}
+
+/* Ajustes para dispositivos menores */
+@media (max-width: 480px) {
+    .chart-container {
+        padding: 10px;
+    }
+
+    .chart-container h3 {
+        font-size: 16px; /* Reduz ainda mais o tamanho do título */
+    }
+
+    ul li {
+        padding: 8px;
+    }
+
+    h1, h2, h3 {
+        font-size: 18px;
+    }
+}
+
+/* Links de navegação */
+nav {
+    text-align: center;
+    margin-top: 20px;
+}
+
+nav a {
+    margin: 0 10px;
+    padding: 10px 15px;
+    background: #00d4ff;
+    color: #1b1f38;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+nav a:hover {
+    background: #00a3cc;
+    transform: translateY(-2px);
+}
+
+/* Rodapé */
+footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    background: #252a48;
+    color: #e0e0e0;
+    border-top: 1px solid #00d4ff;
+    font-size: 14px;
+    letter-spacing: 1px;
 }

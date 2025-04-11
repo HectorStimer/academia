@@ -1,127 +1,264 @@
-/* Estilização geral */
+/* Estilo geral */
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
+    font-family: 'Arial', sans-serif;
+    background-color: #1b1f38; /* Fundo escuro estilo Hydra */
+    color: #e0e0e0; /* Texto claro para contraste */
+    margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
     text-align: center;
+    color: #00d4ff; /* Azul vibrante estilo Hydra */
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+/* Header */
+.header {
+    display: flex;
+    flex-wrap: wrap; /* Permite que os elementos quebrem linha em telas menores */
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px 20px; /* Adiciona espaçamento interno */
+    background: #252a48; /* Fundo escuro */
+    border-bottom: 2px solid #00d4ff; /* Linha inferior */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box; /* Inclui padding na largura total */
 }
 
-h1, h2 {
-    color: #333;
+.header h1 {
+    color: #00d4ff; /* Azul vibrante */
+    font-size: 20px;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap; /* Evita quebra de linha no texto */
 }
 
-/* Links */
+.header-buttons {
+    display: flex;
+    gap: 10px; /* Espaçamento entre os botões */
+    flex-wrap: wrap; /* Permite que os botões quebrem linha em telas menores */
+    justify-content: flex-end; /* Alinha os botões à direita */
+}
+
+.header-buttons .button {
+    padding: 8px 15px; /* Ajusta o tamanho dos botões */
+    background: #00d4ff;
+    color: #1b1f38;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.header-buttons .button:hover {
+    background: #00a3cc; /* Efeito hover */
+    transform: translateY(-2px); /* Efeito de elevação */
+}
+
+/* Ajustes para dispositivos menores */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column; /* Organiza os elementos verticalmente */
+        align-items: center; /* Centraliza os elementos */
+        text-align: center;
+    }
+
+    .header h1 {
+        font-size: 18px; /* Reduz o tamanho do texto */
+        margin-bottom: 10px; /* Adiciona espaçamento abaixo do título */
+    }
+
+    .header-buttons {
+        justify-content: center; /* Centraliza os botões */
+        width: 100%; /* Faz os botões ocuparem toda a largura */
+    }
+
+    .header-buttons .button {
+        flex: 1; /* Faz os botões ocuparem o mesmo espaço */
+        max-width: 150px; /* Limita a largura máxima dos botões */
+    }
+}
+
 a {
     text-decoration: none;
-    color: #007BFF;
+    color: #00d4ff;
     font-weight: bold;
 }
 
 a:hover {
-    color: #0056b3;
+    text-decoration: underline;
+}
+
+/* Botões */
+button, a.button {
+    display: inline-block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    background: #00d4ff;
+    color: #1b1f38;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+button:hover, a.button:hover {
+    background: #00a3cc; /* Efeito hover */
+    transform: translateY(-2px); /* Efeito de elevação */
 }
 
 /* Formulários */
 form {
-    background: #fff;
+    background: #252a48; /* Fundo escuro para formulários */
     padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin: 20px auto;
-    width: 90%;
-    max-width: 500px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    align-items: center;
+    justify-content: center;
 }
 
-label {
+form label {
     display: block;
+    margin-bottom: 5px;
+    color: #e0e0e0;
     font-weight: bold;
-    margin-top: 10px;
-    text-align: left;
 }
 
-input, select, textarea {
+form input, form select, form textarea {
     width: 95%;
     padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    border: 1px solid #00d4ff;
     border-radius: 5px;
+    background: #1b1f38;
+    color: #e0e0e0;
+    transition: border-color 0.3s ease;
 }
 
-button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px;
-    width: 100%;
-    margin-top: 10px;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 16px;
+form input:focus, form select:focus, form textarea:focus {
+    outline: none;
+    border-color: #00a3cc;
+    box-shadow: 0 0 5px rgba(0, 163, 204, 0.5);
 }
 
-button:hover {
-    background-color: #218838;
-}
-
-/* Tabela */
+/* Tabelas */
 table {
-    width: 90%;
-    max-width: 800px;
-    margin: 20px auto;
+    width: 100%;
     border-collapse: collapse;
-    background: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    background: #252a48;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-thead {
-    background: #218838;
-    color: white;
-}
-
-th, td {
-    padding: 10px;
-    border: 1px solid #ddd;
+table th, table td {
+    padding: 15px;
     text-align: left;
+    color: #e0e0e0;
+    font-size: 14px;
 }
 
-tr:nth-child(even) {
-    background: #f2f2f2;
+table th {
+    background: #00d4ff;
+    color: #1b1f38;
+    text-transform: uppercase;
+    font-weight: bold;
 }
 
-/* Mensagens Flash */
-ul {
-    list-style: none;
-    padding: 0;
+table tr:nth-child(even) {
+    background: #2d335b;
 }
 
-li.success {
-    background: #d4edda;
-    color: #155724;
-    padding: 10px;
-    margin: 10px auto;
-    width: 90%;
-    max-width: 500px;
-    border-radius: 5px;
-}
-
-li.warning {
-    background: #fff3cd;
-    color: #856404;
-    padding: 10px;
-    margin: 10px auto;
-    width: 90%;
-    max-width: 500px;
-    border-radius: 5px;
+table tr:hover {
+    background: #3a3f6b;
+    transition: background 0.3s ease;
 }
 
 /* Gráfico */
 canvas {
-    max-width: 600px;
-    margin: 20px auto;
     display: block;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    height: auto;
+    margin: 20px auto;
+    background: #252a48; /* Fundo do gráfico */
+    border-radius: 8px;
+    padding: 10px;
+}
+
+/* Mensagens de feedback */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+ul li {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+ul li.success {
+    background: #28a745;
+    color: #fff;
+}
+
+ul li.danger {
+    background: #dc3545;
+    color: #fff;
+}
+
+ul li.warning {
+    background: #ffc107;
+    color: #1b1f38;
+}
+
+/* Links de navegação */
+nav {
+    text-align: center;
+    margin-top: 20px;
+}
+
+nav a {
+    margin: 0 10px;
+    padding: 10px 15px;
+    background: #00d4ff;
+    color: #1b1f38;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+nav a:hover {
+    background: #00a3cc;
+    transform: translateY(-2px);
+}
+
+/* Rodapé */
+footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    background: #252a48;
+    color: #e0e0e0;
+    border-top: 1px solid #00d4ff;
+    font-size: 14px;
+    letter-spacing: 1px;
 }

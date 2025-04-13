@@ -20,13 +20,13 @@ def loginAluno():
 
         if not aluno:
             flash('esse usuario nao existe')
-            return redirect(url_for('loginAluno'))
+            return redirect(url_for('login_aluno.loginAluno'))
 
         if aluno and aluno.check_senha(senha):
-            login_user(aluno)
+            login_user(aluno, remember=True)
             return redirect(url_for('areaAluno.areaAluno'))
 
         flash('Email ou senha incorretos', 'danger')
-        return redirect(url_for('loginAluno'))
+        return redirect(url_for('login_aluno.loginAluno'))
     
     return render_template('login.html', form=form)

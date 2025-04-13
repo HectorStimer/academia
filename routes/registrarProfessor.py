@@ -27,6 +27,6 @@ def registerProfessor():
         login_user(novo_professor)
         flash('Professor registrado com sucesso!', 'success')
 
-        return redirect(url_for('areaProfessor'))
+        return redirect(url_for('area_professor.area_professor'))
 
     return render_template("registrarProfessor.html", form=form)

@@ -32,7 +32,14 @@
     <form action="{{ url_for('area_professor.area_professor') }}" method="POST">
         {{ form_progresso.hidden_tag() }}
         <label for="id_aluno">{{ form_progresso.id_aluno.label }}</label>
-        {{ form_progresso.id_aluno(id="selectAluno", onchange="atualizarGrafico(this.value)") }}
+        <select id="selectAluno" name="id_aluno" onchange="atualizarGrafico(this.value)">
+            <option value="">Selecione um aluno</option>
+            {% for aluno_id, aluno_nome in form_progresso.id_aluno.choices %}
+                <option value="{{ aluno_id }}" {% if aluno_id == id_aluno %}selected{% endif %}>
+                    {{ aluno_nome }}
+                </option>
+            {% endfor %}
+        </select>
         <label for="peso">{{ form_progresso.peso.label }}</label>
         {{ form_progresso.peso }}
         <label for="altura">{{ form_progresso.altura.label }}</label>
@@ -63,48 +70,25 @@
         <h3>Progresso do Aluno</h3>
         <canvas id="graficoProgresso"></canvas>
     </div>
-    
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul>
-                {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
-    
-    <h2>Estatísticas de Progresso dos Alunos</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Aluno</th>
-                <th>Progresso</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for aluno in alunos %}
-                <tr>
-                    <td>{{ aluno.nome }}</td>
-                    <td>
-                        {% if aluno.id_aluno in progresso_alunos and progresso_alunos[aluno.id_aluno] %}
-                            {% for p in progresso_alunos[aluno.id_aluno] %}
-                                <p>{{ p }}</p>
-                            {% endfor %}
-                        {% else %}
-                            <p>Sem progresso registrado</p>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    
-    <h2>Gráfico de Resultados Antes e Depois</h2>
-    <div>
-        <h3>Progresso do Aluno</h3>
-        <canvas id="graficoProgresso"></canvas>
-    </div>
+
+    {% if ultimo_progresso %}
+        <h3>Últimos Dados Registrados</h3>
+        <ul>
+            <li><strong>Peso:</strong> {{ ultimo_progresso.peso }} kg</li>
+            <li><strong>Altura:</strong> {{ ultimo_progresso.altura }} cm</li>
+            <li><strong>Braço Esquerdo:</strong> {{ ultimo_progresso.bracoE }} cm</li>
+            <li><strong>Braço Direito:</strong> {{ ultimo_progresso.bracoD }} cm</li>
+            <li><strong>Coxa Esquerda:</strong> {{ ultimo_progresso.coxaE }} cm</li>
+            <li><strong>Coxa Direita:</strong> {{ ultimo_progresso.coxaD }} cm</li>
+            <li><strong>Panturrilha Esquerda:</strong> {{ ultimo_progresso.panturrilhaE }} cm</li>
+            <li><strong>Panturrilha Direita:</strong> {{ ultimo_progresso.panturrilhaD }} cm</li>
+            <li><strong>Tórax:</strong> {{ ultimo_progresso.torax }} cm</li>
+            <li><strong>Cintura:</strong> {{ ultimo_progresso.cintura }} cm</li>
+            <li><strong>Observações:</strong> {{ ultimo_progresso.observacoes }}</li>
+        </ul>
+    {% else %}
+        <p>Nenhum progresso registrado para este aluno.</p>
+    {% endif %}
 
     <script>
         const ctx = document.getElementById('graficoProgresso').getContext('2d');
@@ -144,8 +128,15 @@
 
         // Função para atualizar o gráfico ao selecionar um aluno
         function atualizarGrafico(idAluno) {
+            if (!idAluno) return; // Verifica se um aluno foi selecionado
+
             fetch(`/area/professor/${idAluno}`) // Faz uma requisição para obter os dados do aluno
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao carregar os dados do aluno.');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     criarOuAtualizarGrafico(data.labels, data.datasets);
                 })

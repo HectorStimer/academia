@@ -6,7 +6,7 @@ class Aluno(db.Model, UserMixin):
     __tablename__ = 'alunos'
     
     id_aluno = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    cpf = db.Column(db.Integer, nullable = False)
+    cpf = db.Column(db.String(14), nullable=False)
     nome = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(100), nullable=False, unique=True)
     telefone = db.Column(db.String(14))
@@ -23,7 +23,7 @@ class Aluno(db.Model, UserMixin):
         return check_password_hash(self.senha_hash, senha)
 
     def get_id(self):
-        return str(self.id_aluno)
+        return f"aluno-{self.id_aluno}"
 
 class Pagamento(db.Model, UserMixin):
     __tablename__ = 'pagamento'  
@@ -53,7 +53,7 @@ class Professor(db.Model, UserMixin):
         return check_password_hash(self.senha_hash, senha)
 
     def get_id(self):
-        return str(self.id_professor)
+        return f"professor-{self.id_professor}"
 
 class Treinamento(db.Model, UserMixin):
     __tablename__ = 'treinamentos'
@@ -103,4 +103,4 @@ class Administrador(db.Model, UserMixin):
     id_ADM= db.Column(db.Integer, primary_key=True, autoincrement=True)
     id_professor = db.Column(db.Integer, db.ForeignKey('professores.id_professor'), nullable=False)
 
-    
+

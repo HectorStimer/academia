@@ -13,7 +13,7 @@ pagamentos_bp = Blueprint('pagamentos', __name__)
 def pagamento():
     if not current_user.id_aluno:
         flash("Você precisa ser um aluno para entrar nessa área.", "warning")
-        return redirect(url_for('loginAluno'))
+        return redirect(url_for('login_aluno.loginAluno'))
 
     
     plano_atual = Plano.query.filter_by(id_plano=current_user.plano_id).first()

@@ -8,12 +8,12 @@ from forms import TreinamentoForm, ProgressoForm
 area_professor_bp = Blueprint('area_professor', __name__)
 
 @area_professor_bp.route('/', methods=["GET", "POST"])
-@area_professor_bp.route('/''/<int:id_aluno>', methods=["GET", "POST"])
+@area_professor_bp.route('/<int:id_aluno>', methods=["GET", "POST"])
 @login_required
 def area_professor(id_aluno=None):
     if isinstance(current_user, Aluno): 
         flash("Você precisa ser um professor para acessar esta área.", "warning")
-        return redirect(url_for("loginProfessor"))
+        return redirect(url_for("login_professor.loginProfessor"))
 
     admin = Administrador.query.filter_by(id_professor=current_user.id_professor).first()
 
@@ -58,6 +58,7 @@ def area_professor(id_aluno=None):
         'labels': [],
         'datasets': []
     }
+    ultimo_progresso = None
 
     if id_aluno:
         aluno = Aluno.query.get(id_aluno)
@@ -77,9 +78,61 @@ def area_professor(id_aluno=None):
                     'borderColor': 'rgba(255, 99, 132, 1)',
                     'backgroundColor': 'rgba(255, 99, 132, 0.2)',
                     'fill': False
+                },
+                {
+                    'label': 'Braço Esquerdo (cm)',
+                    'data': [p.bracoE for p in aluno.progressos],
+                    'borderColor': 'rgba(75, 192, 192, 1)',
+                    'backgroundColor': 'rgba(75, 192, 192, 0.2)',
+                    'fill': False
+                },
+                {
+                    'label': 'Braço Direito (cm)',
+                    'data': [p.bracoD for p in aluno.progressos],
+                    'borderColor': 'rgba(153, 102, 255, 1)',
+                    'backgroundColor': 'rgba(153, 102, 255, 0.2)',
+                    'fill': False
+                },
+                {
+                    'label': 'Coxa Esquerda (cm)',
+                    'data': [p.coxaE for p in aluno.progressos],
+                    'borderColor': 'rgba(255, 206, 86, 1)',
+                    'backgroundColor': 'rgba(255, 206, 86, 0.2)',
+                    'fill': False
+                },
+                {
+                    'label': 'Coxa Direita (cm)',
+                    'data': [p.coxaD for p in aluno.progressos],
+                    'borderColor': 'rgba(54, 162, 235, 1)',
+                    'backgroundColor': 'rgba(54, 162, 235, 0.2)',
+                    'fill': False
+                },
+                {
+                    'label': 'Panturrilha Esquerda (cm)',
+                    'data': [p.panturrilhaE for p in aluno.progressos],
+                    'borderColor': 'rgba(255, 159, 64, 1)',
+                    'backgroundColor': 'rgba(255, 159, 64, 0.2)',
+                    'fill': False
+                },
+                {
+                    'label': 'Panturrilha Direita (cm)',
+                    'data': [p.panturrilhaD for p in aluno.progressos],
+                    'borderColor': 'rgba(201, 203, 207, 1)',
+                    'backgroundColor': 'rgba(201, 203, 207, 0.2)',
+                    'fill': False
+                },
+                {
+                    'label': 'Tórax (cm)',
+                    'data': [p.torax for p in aluno.progressos],
+                    'borderColor': 'rgba(255, 99, 132, 1)',
+                    'backgroundColor': 'rgba(255, 99, 132, 0.2)',
+                    'fill': False
                 }
             ]
+            # Obter o último progresso registrado
+            ultimo_progresso = aluno.progressos[-1]
 
     return render_template('areaProfessor.html', professor=current_user, 
                            form_treinamento=form_treinamento, form_progresso=form_progresso, 
-                           admin=admin, dados_grafico=dados_grafico, id_aluno=id_aluno)
+                           admin=admin, dados_grafico=dados_grafico, id_aluno=id_aluno, 
+                           ultimo_progresso=ultimo_progresso)

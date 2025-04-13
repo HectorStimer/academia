@@ -47,7 +47,7 @@ def registrarAluno():
         # Valida o CPF antes de registrar o aluno
         if not validar_cpf(cpf):
             flash('CPF inválido!', 'danger')
-            return redirect(url_for('registrarAluno'))
+            return redirect(url_for('registrar_aluno.registrarAluno'))
 
         novo_aluno = Aluno(
             nome=form.nome.data,
@@ -66,6 +66,6 @@ def registrarAluno():
         login_user(novo_aluno)
         flash('Aluno registrado com sucesso!', 'success')
 
-        return redirect(url_for('areaAluno'))
+        return redirect(url_for('areaAluno.areaAluno'))
 
     return render_template("registro-aluno.html", form=form)

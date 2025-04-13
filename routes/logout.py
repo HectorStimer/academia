@@ -7,14 +7,9 @@ from forms import *
 
 logout_bp = Blueprint('logout', __name__)
 
-@logout_bp.route("/logout")
+@logout_bp.route("/")
 @login_required
 def logout():
-    user_type = type(current_user) 
-
     logout_user()
     flash("Você saiu da sua conta.", "info")
-
-    if user_type == Professor:
-        return redirect(url_for("login_professor.loginProfessor"))
-    return redirect(url_for("login_aluno.loginAluno"))
+    return redirect(url_for("homepage.homepage"))

@@ -36,13 +36,14 @@ app.register_blueprint(registrar_aluno_bp, url_prefix="/registrar/aluno")
 @lm.user_loader
 def user_loader(user_id):
     from models import Aluno, Professor
-    aluno = Aluno.query.get(user_id)
-    if aluno:
-        return aluno
 
-    professor = Professor.query.get(user_id)
-    if professor:
-        return professor
+    # Verificar o prefixo para determinar o tipo de usuário
+    if user_id.startswith("aluno-"):
+        aluno_id = user_id.split("-")[1]
+        return Aluno.query.get(aluno_id)
+    elif user_id.startswith("professor-"):
+        professor_id = user_id.split("-")[1]
+        return Professor.query.get(professor_id)
 
     return None
 

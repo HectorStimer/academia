@@ -25,15 +25,15 @@ class Aluno(db.Model, UserMixin):
     def get_id(self):
         return f"aluno-{self.id_aluno}"
 
-class Pagamento(db.Model, UserMixin):
-    __tablename__ = 'pagamento'  
+class Pagamento(db.Model):
+    __tablename__ = 'pagamentos'
 
     id_pagamento = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    valor = db.Column(db.Numeric(10, 2), nullable=False)
-    data_pagamento = db.Column(db.Date, nullable=False)
     id_aluno = db.Column(db.Integer, db.ForeignKey('alunos.id_aluno'), nullable=False)
+    mes = db.Column(db.String(20), nullable=False)
+    status = db.Column(db.String(20), nullable=False)  # "pago" ou "nao_pago"
 
-    aluno = db.relationship('Aluno', backref=db.backref('pagamentos', lazy=True, cascade="all, delete-orphan"))
+    aluno = db.relationship('Aluno', backref='pagamentos')
 
 class Professor(db.Model, UserMixin):
     __tablename__ = 'professores' 

@@ -34,10 +34,32 @@
         </div>
     </div>
 
+    <div style="width: 100%; max-width: 800px; margin: 20px auto;">
+        <h3>Último Progresso</h3>
+        <p>{{ ultimo_progresso }}</p> <!-- Adicione esta linha para verificar os dados -->
+        {% if ultimo_progresso %}
+            <ul>
+                <li><strong>Data:</strong> {{ ultimo_progresso.data_atualizacao.strftime('%d/%m/%Y') }}</li>
+                <li><strong>Peso:</strong> {{ ultimo_progresso.peso or 0 }} kg</li>
+                <li><strong>Cintura:</strong> {{ ultimo_progresso.cintura or 0 }} cm</li>
+                <li><strong>Braço Esquerdo:</strong> {{ ultimo_progresso.bracoE or 0 }} cm</li>
+                <li><strong>Braço Direito:</strong> {{ ultimo_progresso.bracoD or 0 }} cm</li>
+                <li><strong>Coxa Esquerda:</strong> {{ ultimo_progresso.coxaE or 0 }} cm</li>
+                <li><strong>Coxa Direita:</strong> {{ ultimo_progresso.coxaD or 0 }} cm</li>
+                <li><strong>Panturrilha Esquerda:</strong> {{ ultimo_progresso.panturrilhaE or 0 }} cm</li>
+                <li><strong>Panturrilha Direita:</strong> {{ ultimo_progresso.panturrilhaD or 0 }} cm</li>
+                <li><strong>Tórax:</strong> {{ ultimo_progresso.torax or 0 }} cm</li>
+                <li><strong>Observações:</strong> {{ ultimo_progresso.observacoes or 'Nenhuma' }}</li>
+            </ul>
+        {% else %}
+            <p>Você ainda não possui progressos registrados.</p>
+        {% endif %}
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const ctxAluno = document.getElementById('graficoProgressoAluno').getContext('2d');
-        const dadosGraficoAluno = {{ dados_grafico|tojson }};
+        const dadosGraficoAluno = JSON.parse('{{ dados_grafico|tojson|safe }}');
         
         new Chart(ctxAluno, {
             type: 'line',
@@ -46,58 +68,40 @@
                 datasets: [
                     {
                         label: 'Peso (kg)',
-                        data: dadosGraficoAluno.datasets.find(dataset => dataset.label === 'Peso (kg)').data,
+                        data: dadosGraficoAluno.datasets[0].data,
                         borderColor: 'rgba(54, 162, 235, 1)',
                         backgroundColor: 'rgba(54, 162, 235, 0.2)',
                         fill: false
                     },
                     {
-                        label: 'Braço Esquerdo (cm)',
-                        data: dadosGraficoAluno.datasets.find(dataset => dataset.label === 'Braço Esquerdo (cm)').data,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        label: 'Cintura (cm)',
+                        data: dadosGraficoAluno.datasets[1].data,
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
                         fill: false
                     },
                     {
-                        label: 'Braço Direito (cm)',
-                        data: dadosGraficoAluno.datasets.find(dataset => dataset.label === 'Braço Direito (cm)').data,
-                        borderColor: 'rgba(153, 102, 255, 1)',
-                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                        fill: false
-                    },
-                    {
-                        label: 'Coxa Esquerda (cm)',
-                        data: dadosGraficoAluno.datasets.find(dataset => dataset.label === 'Coxa Esquerda (cm)').data,
+                        label: 'Média Braço (cm)',
+                        data: dadosGraficoAluno.datasets[2].data,
                         borderColor: 'rgba(255, 206, 86, 1)',
-                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
                         fill: false
                     },
                     {
-                        label: 'Coxa Direita (cm)',
-                        data: dadosGraficoAluno.datasets.find(dataset => dataset.label === 'Coxa Direita (cm)').data,
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        label: 'Média Coxa (cm)',
+                        data: dadosGraficoAluno.datasets[3].data,
+                        borderColor: 'rgba(75, 192, 192, 1)',
                         fill: false
                     },
                     {
-                        label: 'Panturrilha Esquerda (cm)',
-                        data: dadosGraficoAluno.datasets.find(dataset => dataset.label === 'Panturrilha Esquerda (cm)').data,
-                        borderColor: 'rgba(255, 159, 64, 1)',
-                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                        fill: false
-                    },
-                    {
-                        label: 'Panturrilha Direita (cm)',
-                        data: dadosGraficoAluno.datasets.find(dataset => dataset.label === 'Panturrilha Direita (cm)').data,
-                        borderColor: 'rgba(201, 203, 207, 1)',
-                        backgroundColor: 'rgba(201, 203, 207, 0.2)',
+                        label: 'Média Panturrilha (cm)',
+                        data: dadosGraficoAluno.datasets[4].data,
+                        borderColor: 'rgba(153, 102, 255, 1)',
                         fill: false
                     },
                     {
                         label: 'Tórax (cm)',
-                        data: dadosGraficoAluno.datasets.find(dataset => dataset.label === 'Tórax (cm)').data,
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        data: dadosGraficoAluno.datasets[5].data,
+                        borderColor: 'rgba(255, 159, 64, 1)',
                         fill: false
                     }
                 ]
@@ -155,5 +159,7 @@
             }
         });
     </script>
+
+    
 </body>
 </html>

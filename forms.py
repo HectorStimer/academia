@@ -46,7 +46,7 @@ class receberTreinamentoForm(FlaskForm):
 
 
 class ProgressoForm(FlaskForm):
-    id_aluno = SelectField('ID do Aluno', validators=[DataRequired()])
+    id_aluno = SelectField('ID do Aluno', validators=[Optional()])
     peso = DecimalField('Peso (kg)', validators=[Optional()], places=2)
     altura = DecimalField('Altura (m)', validators=[Optional()], places=2)
     bracoE = DecimalField('Braço Esquerdo (cm)', validators=[Optional()], places=2)
@@ -62,9 +62,18 @@ class ProgressoForm(FlaskForm):
 
 class AdminForm(FlaskForm):
     aluno_id = SelectField("Aluno", coerce=int, validators=[DataRequired()])  # Campo para selecionar o aluno
-    nome = StringField("Nome", validators=[DataRequired(), Length(min=2, max=100)])
-    senha = StringField("Senha", validators=[DataRequired(), Length(min=6, max=30)])
-    email = StringField("Email", validators=[DataRequired(), Email()])
-    status = SelectField("Status", choices=[("ativo", "Ativo"), ("inativo", "Inativo")])
-    pagamento = SelectField("Pagamento", choices=[("pago", "Pago"), ("pendente", "Pendente")])
+    nome = StringField("Nome", validators=[Optional(), Length(min=2, max=100)])
+    email = StringField("Email", validators=[Optional(), Email()])
+    telefone = StringField("Telefone", validators=[Optional(), Length(max=11)])
+    cpf = StringField("CPF", validators=[Optional(), Length(min=11, max=14)])
+    data_nascimento = DateField("Data de Nascimento", format='%Y-%m-%d', validators=[Optional()])
+    plano_id = SelectField("Plano", coerce=int, validators=[Optional()])
+    status = SelectField("Status", choices=[("ativo", "Ativo"), ("inativo", "Inativo")], validators=[Optional()])
+    mes_pagamento = SelectField("Mês de Pagamento", choices=[
+        ("Janeiro", "Janeiro"), ("Fevereiro", "Fevereiro"), ("Março", "Março"), ("Abril", "Abril"),
+        ("Maio", "Maio"), ("Junho", "Junho"), ("Julho", "Julho"), ("Agosto", "Agosto"),
+        ("Setembro", "Setembro"), ("Outubro", "Outubro"), ("Novembro", "Novembro"), ("Dezembro", "Dezembro")
+    ], validators=[Optional()])
+    status_pagamento = SelectField("Status do Pagamento", choices=[("pago", "Pago"), ("nao_pago", "Não Pago")], validators=[Optional()])
+    senha = PasswordField("Senha", validators=[Optional(), Length(min=6, max=30)])  # Senha opcional
     submit = SubmitField("Atualizar")

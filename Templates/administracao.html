@@ -1,39 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='areaProfessor.css') }}">
-    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+    <title>Área de Administração</title>
 </head>
 <body>
     <h1>Área de Administração</h1>
     <form method="POST" action="{{ url_for('admin.admin_dashboard') }}">
         {{ form.hidden_tag() }}
-        <div>
-            <label for="aluno_id">Selecione o Aluno:</label>
-            {{ form.aluno_id(class="form-control") }}
-        </div>
-        <div>
-            <label for="nome">Nome:</label>
-            {{ form.nome(class="form-control") }}
-        </div>
-        <div>
-            <label for="email">Email:</label>
-            {{ form.email(class="form-control") }}
-        </div>
-        <div>
-            <label for="status">Status:</label>
-            {{ form.status(class="form-control") }}
-        </div>
-        <div>
-            <label for="pagamento">Pagamento:</label>
-            {{ form.pagamento(class="form-control") }}
-        </div>
-        <div>
-            <label for="senha">Nova Senha (opcional):</label>
-            {{ form.senha(class="form-control") }}
-        </div>
+        <label for="aluno_id">{{ form.aluno_id.label }}</label>
+        {{ form.aluno_id }}
+
+        <label for="nome">{{ form.nome.label }}</label>
+        {{ form.nome }}
+
+        <label for="email">{{ form.email.label }}</label>
+        {{ form.email }}
+
+        <label for="telefone">{{ form.telefone.label }}</label>
+        {{ form.telefone }}
+
+        <label for="cpf">{{ form.cpf.label }}</label>
+        {{ form.cpf }}
+
+        <label for="data_nascimento">{{ form.data_nascimento.label }}</label>
+        {{ form.data_nascimento }}
+
+        <label for="plano_id">{{ form.plano_id.label }}</label>
+        {{ form.plano_id }}
+
+        <label for="status">{{ form.status.label }}</label>
+        {{ form.status }}
+
+        <label for="mes_pagamento">{{ form.mes_pagamento.label }}</label>
+        {{ form.mes_pagamento }}
+
+        <label for="status_pagamento">{{ form.status_pagamento.label }}</label>
+        {{ form.status_pagamento }}
+
+        <label for="senha">{{ form.senha.label }}</label>
+        {{ form.senha }}
+
         <button type="submit" class="btn btn-primary">Atualizar</button>
     </form>
 </body>

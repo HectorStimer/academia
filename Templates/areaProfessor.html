@@ -32,7 +32,7 @@
     <form action="{{ url_for('area_professor.area_professor') }}" method="POST">
         {{ form_progresso.hidden_tag() }}
         <label for="id_aluno">{{ form_progresso.id_aluno.label }}</label>
-        <select id="selectAluno" name="id_aluno" onchange="atualizarGrafico(this.value)">
+        <select id="selectAluno" name="id_aluno">
             <option value="">Selecione um aluno</option>
             {% for aluno_id, aluno_nome in form_progresso.id_aluno.choices %}
                 <option value="{{ aluno_id }}" {% if aluno_id == id_aluno %}selected{% endif %}>
@@ -70,78 +70,69 @@
         <h3>Progresso do Aluno</h3>
         <canvas id="graficoProgresso"></canvas>
     </div>
+    <div style="width: 100%; max-width: 800px; margin: 20px auto;">
+        <h3>Último Progresso</h3>
+        {% if ultimo_progresso %}
+            <ul>
+                <li><strong>Data:</strong> {{ ultimo_progresso.data_atualizacao.strftime('%d/%m/%Y') }}</li>
+                <li><strong>Peso:</strong> {{ ultimo_progresso.peso or 0 }} kg</li>
+                <li><strong>Cintura:</strong> {{ ultimo_progresso.cintura or 0 }} cm</li>
+                <li><strong>Braço Esquerdo:</strong> {{ ultimo_progresso.bracoE or 0 }} cm</li>
+                <li><strong>Braço Direito:</strong> {{ ultimo_progresso.bracoD or 0 }} cm</li>
+                <li><strong>Coxa Esquerda:</strong> {{ ultimo_progresso.coxaE or 0 }} cm</li>
+                <li><strong>Coxa Direita:</strong> {{ ultimo_progresso.coxaD or 0 }} cm</li>
+                <li><strong>Panturrilha Esquerda:</strong> {{ ultimo_progresso.panturrilhaE or 0 }} cm</li>
+                <li><strong>Panturrilha Direita:</strong> {{ ultimo_progresso.panturrilhaD or 0 }} cm</li>
+                <li><strong>Tórax:</strong> {{ ultimo_progresso.torax or 0 }} cm</li>
+                <li><strong>Observações:</strong> {{ ultimo_progresso.observacoes or 'Nenhuma' }}</li>
+            </ul>
+        {% else %}
+            <p>Você ainda não possui progressos registrados.</p>
+        {% endif %}
+    </div>
 
-    {% if ultimo_progresso %}
-        <h3>Últimos Dados Registrados</h3>
-        <ul>
-            <li><strong>Peso:</strong> {{ ultimo_progresso.peso }} kg</li>
-            <li><strong>Altura:</strong> {{ ultimo_progresso.altura }} cm</li>
-            <li><strong>Braço Esquerdo:</strong> {{ ultimo_progresso.bracoE }} cm</li>
-            <li><strong>Braço Direito:</strong> {{ ultimo_progresso.bracoD }} cm</li>
-            <li><strong>Coxa Esquerda:</strong> {{ ultimo_progresso.coxaE }} cm</li>
-            <li><strong>Coxa Direita:</strong> {{ ultimo_progresso.coxaD }} cm</li>
-            <li><strong>Panturrilha Esquerda:</strong> {{ ultimo_progresso.panturrilhaE }} cm</li>
-            <li><strong>Panturrilha Direita:</strong> {{ ultimo_progresso.panturrilhaD }} cm</li>
-            <li><strong>Tórax:</strong> {{ ultimo_progresso.torax }} cm</li>
-            <li><strong>Cintura:</strong> {{ ultimo_progresso.cintura }} cm</li>
-            <li><strong>Observações:</strong> {{ ultimo_progresso.observacoes }}</li>
-        </ul>
-    {% else %}
-        <p>Nenhum progresso registrado para este aluno.</p>
-    {% endif %}
-
+    <div id="graficoProgressoContainer" style="width: 100%; max-width: 800px; margin: 0 auto;"></div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>	
     <script>
         const ctx = document.getElementById('graficoProgresso').getContext('2d');
-        let graficoProgresso = null;
+        const dadosGrafico = JSON.parse('{{ dados_grafico|tojson|safe }}');
 
-        // Função para criar ou atualizar o gráfico
-        function criarOuAtualizarGrafico(labels, datasets) {
-            if (graficoProgresso) {
-                graficoProgresso.destroy(); // Destroi o gráfico existente
-            }
-
-            graficoProgresso = new Chart(ctx, {
+        if (dadosGrafico.labels.length > 0) {
+            new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: labels,
-                    datasets: datasets
+                    labels: dadosGrafico.labels,
+                    datasets: dadosGrafico.datasets
                 },
                 options: {
                     responsive: true,
                     plugins: {
-                        legend: {
-                            position: 'top',
-                        },
-                        title: {
-                            display: true,
-                            text: 'Progresso do Aluno'
-                        }
+                        legend: { position: 'top' },
+                        title: { display: true, text: 'Progresso do Aluno' }
                     },
                     scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+                        x: { title: { display: true, text: 'Data' } },
+                        y: { title: { display: true, text: 'Medições' }, beginAtZero: true }
                     }
                 }
             });
+        } else {
+            ctx.font = "16px Arial";
+            ctx.fillText("Nenhum dado disponível para exibir.", 10, 50);
         }
-
-        // Função para atualizar o gráfico ao selecionar um aluno
-        function atualizarGrafico(idAluno) {
-            if (!idAluno) return; // Verifica se um aluno foi selecionado
-
-            fetch(`/area/professor/${idAluno}`) // Faz uma requisição para obter os dados do aluno
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Erro ao carregar os dados do aluno.');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    criarOuAtualizarGrafico(data.labels, data.datasets);
-                })
-                .catch(error => console.error('Erro ao atualizar o gráfico:', error));
-        }
+    </script>
+    <script>
+        document.getElementById('selectAluno').addEventListener('change', function () {
+            const selectedAluno = this.value;
+            if (selectedAluno) {
+                // Redireciona para a URL com o parâmetro id_aluno
+                window.location.href = `{{ url_for('area_professor.area_professor') }}?id_aluno=${selectedAluno}`;
+            } else {
+                // Caso "Selecione um aluno" seja escolhido, redireciona para a página sem parâmetros
+                window.location.href = `{{ url_for('area_professor.area_professor') }}`;
+            }
+        });
     </script>
 </body>
 </html>

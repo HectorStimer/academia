@@ -96,7 +96,6 @@ class Progresso(db.Model, UserMixin):
     def __repr__(self):
         return f'<Progresso {self.id_progresso} - Aluno {self.id_aluno}>'
 
-
 class Administrador(db.Model, UserMixin):
     __tablename__ = "administrador"
 

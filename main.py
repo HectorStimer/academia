@@ -2,7 +2,7 @@ from flask import Flask
 from config import Config
 from extensions import db, lm
 
-# Importar Blueprints
+
 from routes.administracao import admin_bp
 from routes.areaProfessor import area_professor_bp
 from routes.areaAluno import areaAluno_bp
@@ -20,7 +20,6 @@ app.config.from_object(Config)
 db.init_app(app)
 lm.init_app(app)
 
-# Registrar Blueprints
 app.register_blueprint(admin_bp, url_prefix="/administracao")
 app.register_blueprint(area_professor_bp, url_prefix="/area/professor")
 app.register_blueprint(areaAluno_bp, url_prefix="/area/aluno")

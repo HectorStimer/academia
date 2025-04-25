@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='areaProfessor.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container {
+            position: relative;
+            width: 88%;
+            margin: 20px auto;
+            padding: 20px;
+            background: #2d335b;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            height: 400px; /* Altura fixa para o contêiner */
+        }
+    </style>
     <title>Dashboard do Professor</title>
 </head>
 <body>
@@ -22,24 +34,37 @@
     <form action="{{ url_for('area_professor.area_professor') }}" method="POST">
         {{ form_treinamento.hidden_tag() }}
         <label for="id_aluno">{{ form_treinamento.id_aluno.label }}</label>
-        {{ form_treinamento.id_aluno }}
-        <label for="treino">{{ form_treinamento.treino.label }}</label>
-        {{ form_treinamento.treino }}
-        <button type="submit">Enviar Treinamento</button>
-    </form>
-
-    <h2>Registrar Progresso do Aluno</h2>
-    <form action="{{ url_for('area_professor.area_professor') }}" method="POST">
-        {{ form_progresso.hidden_tag() }}
-        <label for="id_aluno">{{ form_progresso.id_aluno.label }}</label>
         <select id="selectAluno" name="id_aluno">
             <option value="">Selecione um aluno</option>
-            {% for aluno_id, aluno_nome in form_progresso.id_aluno.choices %}
+            {% for aluno_id, aluno_nome in form_treinamento.id_aluno.choices %}
                 <option value="{{ aluno_id }}" {% if aluno_id == id_aluno %}selected{% endif %}>
                     {{ aluno_nome }}
                 </option>
             {% endfor %}
         </select>
+        <label for="treino">{{ form_treinamento.treino.label }}</label>
+        {{ form_treinamento.treino }}
+        <button type="submit" name="action" value="enviar">Enviar Treinamento</button>
+        <button type="submit" name="action" value="deletar">Deletar Todos os Treinamentos</button>
+    </form>
+
+
+    <div class="informacao-aluno">
+    {% if aluno %}
+    <p><strong>Nome do Aluno:</strong> {{ aluno.nome }}</p>
+    <p><strong>Email do Aluno:</strong> {{ aluno.email }}</p>
+    <p><strong>Telefone do Aluno:</strong> {{ aluno.telefone }}</p>
+    {% endif %}
+    </div>
+
+    <h2>Registrar Progresso do Aluno</h2>
+    <form action="{{ url_for('area_professor.area_professor', id_aluno=id_aluno) }}" method="POST">
+        {{ form_progresso.hidden_tag() }}
+        {% if aluno %}
+            <p><strong>Aluno Selecionado:</strong> {{ aluno.nome }}</p>
+        {% else %}
+            <p><strong>Selecione um aluno no formulário de treinamento.</strong></p>
+        {% endif %}
         <label for="peso">{{ form_progresso.peso.label }}</label>
         {{ form_progresso.peso }}
         <label for="altura">{{ form_progresso.altura.label }}</label>
@@ -70,26 +95,46 @@
         <h3>Progresso do Aluno</h3>
         <canvas id="graficoProgresso"></canvas>
     </div>
-    <div style="width: 100%; max-width: 800px; margin: 20px auto;">
-        <h3>Último Progresso</h3>
-        {% if ultimo_progresso %}
-            <ul>
-                <li><strong>Data:</strong> {{ ultimo_progresso.data_atualizacao.strftime('%d/%m/%Y') }}</li>
-                <li><strong>Peso:</strong> {{ ultimo_progresso.peso or 0 }} kg</li>
-                <li><strong>Cintura:</strong> {{ ultimo_progresso.cintura or 0 }} cm</li>
-                <li><strong>Braço Esquerdo:</strong> {{ ultimo_progresso.bracoE or 0 }} cm</li>
-                <li><strong>Braço Direito:</strong> {{ ultimo_progresso.bracoD or 0 }} cm</li>
-                <li><strong>Coxa Esquerda:</strong> {{ ultimo_progresso.coxaE or 0 }} cm</li>
-                <li><strong>Coxa Direita:</strong> {{ ultimo_progresso.coxaD or 0 }} cm</li>
-                <li><strong>Panturrilha Esquerda:</strong> {{ ultimo_progresso.panturrilhaE or 0 }} cm</li>
-                <li><strong>Panturrilha Direita:</strong> {{ ultimo_progresso.panturrilhaD or 0 }} cm</li>
-                <li><strong>Tórax:</strong> {{ ultimo_progresso.torax or 0 }} cm</li>
-                <li><strong>Observações:</strong> {{ ultimo_progresso.observacoes or 'Nenhuma' }}</li>
-            </ul>
-        {% else %}
-            <p>Você ainda não possui progressos registrados.</p>
-        {% endif %}
+
+    <div class="ultimo_progresso">
+    {% if ultimo_progresso %}
+        <h2>Último Progresso do Aluno</h2>
+        <ul>
+            <li><strong>Data:</strong> {{ ultimo_progresso.data_atualizacao.strftime('%d/%m/%Y') }}</li>
+            <li><strong>Peso:</strong> {{ ultimo_progresso.peso or 0 }} kg</li>
+            <li><strong>Cintura:</strong> {{ ultimo_progresso.cintura or 0 }} cm</li>
+            <li><strong>Braço Esquerdo:</strong> {{ ultimo_progresso.bracoE or 0 }} cm</li>
+            <li><strong>Braço Direito:</strong> {{ ultimo_progresso.bracoD or 0 }} cm</li>
+            <li><strong>Coxa Esquerda:</strong> {{ ultimo_progresso.coxaE or 0 }} cm</li>
+            <li><strong>Coxa Direita:</strong> {{ ultimo_progresso.coxaD or 0 }} cm</li>
+            <li><strong>Panturrilha Esquerda:</strong> {{ ultimo_progresso.panturrilhaE or 0 }} cm</li>
+            <li><strong>Panturrilha Direita:</strong> {{ ultimo_progresso.panturrilhaD or 0 }} cm</li>
+            <li><strong>Tórax:</strong> {{ ultimo_progresso.torax or 0 }} cm</li>
+            <li><strong>Observações:</strong> {{ ultimo_progresso.observacoes or 'Nenhuma' }}</li>
+        </ul>
+    {% else %}
+        <p>Você ainda não possui progressos registrados.</p>
+    {% endif %}
     </div>
+
+    <main class="container">
+        <section class="treinamentos">
+            <h2>Treinamentos do Aluno</h2>
+            <ul>
+                {% if treinamentos %}
+                    {% for treino in treinamentos %}
+                        <li>
+                            <strong>Professor:</strong> {{ treino.professor.nome or 'N/A' }} <br>
+                            <strong>Treinamento:</strong> {{ treino.treino or 'N/A' }} <br>
+                            <strong>Data:</strong> {{ treino.data_criacao.strftime('%d/%m/%Y') if treino.data_criacao else 'N/A' }}
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <p>Este aluno ainda não recebeu nenhum treinamento.</p>
+                {% endif %}
+            </ul>
+        </section>
+    </main>
 
     <div id="graficoProgressoContainer" style="width: 100%; max-width: 800px; margin: 0 auto;"></div>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

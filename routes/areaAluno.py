@@ -22,7 +22,6 @@ def areaAluno():
         'datasets': []
     }
 
-    # Inicializar a variável ultimo_progresso
     ultimo_progresso = None
 
     if current_user.progressos:

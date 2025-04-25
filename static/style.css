@@ -84,35 +84,103 @@ h1 {
     padding: 16px;
 }
 
+/* Novo layout usando grid para a seção central */
 .imagem_central {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-    border-radius: 16px;
-    background-color: black;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr; /* 3 colunas: imagem - texto - imagem */
+    grid-gap: 20px;
+    padding: 40px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #0f0f0f 0%, #1f1f1f 100%);
+    margin: 30px 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-#apresentacao {
+/* Título principal da seção */
+.sobre-nos-titulo {
     color: white;
-    font-size: 25px;
-    width: 100%;
-    max-width: 700px;
+    text-align: center;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    grid-column: 1 / span 3; /* Ocupa todas as colunas */
+    text-transform: uppercase;
+    border-bottom: 2px solid #633cff;
+    padding-bottom: 15px;
+}
+
+/* Texto no centro */
+#apresentacao {
+    color: #f5f5f5;
+    font-size: 23px;
     padding: 20px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Segoe UI', Arial, sans-serif;
     text-align: justify;
+    line-height: 1.7;
+    background-color: rgba(40, 40, 40, 0.7);
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    border-left: 3px solid #633cff;
+    grid-column: 2; /* Coluna do meio */
 }
 
-#atleta, #atleta1 {
-    max-width: 100%;
+/* Posicionamento das imagens */
+#atleta1 {
+    width: 100%;
+    max-width: 300px;
     height: auto;
-    border: 5px;
-    color: black;
-    box-shadow: 0 0 20px;
-    border-radius: 16px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border: 2px solid transparent;
+    grid-column: 1; /* Primeira coluna */
+    justify-self: center;
 }
 
+#atleta {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    border: 2px solid transparent;
+    grid-column: 3; /* Terceira coluna */
+    justify-self: center;
+}
+
+/* Efeito hover nas imagens */
+#atleta:hover, #atleta1:hover {
+    border: 2px solid #633cff;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsividade */
+@media (max-width: 992px) {
+    .imagem_central {
+        grid-template-columns: 1fr; /* Uma coluna em telas pequenas */
+    }
+    
+    .sobre-nos-titulo {
+        grid-column: 1;
+    }
+    
+    #atleta1 {
+        grid-column: 1;
+        grid-row: 2;
+        margin: 0 auto 15px auto;
+    }
+    
+    #apresentacao {
+        grid-column: 1;
+        grid-row: 3;
+    }
+    
+    #atleta {
+        grid-column: 1;
+        grid-row: 4;
+        margin: 15px auto 0 auto;
+    }
+}
 .tabela {
     background-color: white;
     padding: 20px;
@@ -276,4 +344,160 @@ footer {
     width: 100%;
     padding: 20px;
     font-family: sans-serif, Arial;
+}
+/* Melhorias de responsividade para o header e menu */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        padding: 15px;
+    }
+    
+    .logo {
+        margin-bottom: 15px;
+    }
+    
+    .menu {
+        width: 100%;
+        justify-content: center;
+        gap: 5px;
+    }
+    
+    .menu a {
+        display: inline-block !important; /* Sobrescrever o display: none anterior */
+        font-size: 12px;
+        padding: 8px 10px;
+    }
+}
+
+/* Melhorias para a imagem central e texto de apresentação */
+@media (max-width: 992px) {
+    #apresentacao {
+        font-size: 18px;
+        padding: 15px;
+    }
+    
+    #atleta, #atleta1 {
+        max-width: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .imagem_central {
+        flex-direction: column;
+        padding: 15px;
+    }
+    
+    #apresentacao {
+        font-size: 16px;
+        padding: 10px;
+        order: 2;
+    }
+    
+    #atleta1 {
+        order: 1;
+        margin-bottom: 15px;
+        max-width: 250px;
+    }
+    
+    #atleta {
+        order: 3;
+        margin-top: 15px;
+        max-width: 250px;
+    }
+}
+
+/* Melhorias para tabela de planos em telas pequenas */
+@media (max-width: 768px) {
+    .tabela {
+        width: 95%;
+        margin: 20px auto;
+        padding: 15px;
+    }
+    
+    .tabela th, .tabela td {
+        padding: 6px;
+        font-size: 14px;
+    }
+    
+    .tabela td img {
+        width: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tabela th, .tabela td {
+        padding: 4px;
+        font-size: 12px;
+    }
+}
+
+/* Melhorias para o mapa em telas menores */
+@media (max-width: 768px) {
+    .localizacao h2 {
+        font-size: 18px;
+        padding: 0 10px;
+    }
+    
+    #mapa-iframe {
+        width: 95%;
+        height: 300px;
+    }
+}
+
+/* Melhorias para a seção de personais */
+@media (max-width: 768px) {
+    .personais {
+        gap: 15px;
+    }
+    
+    .personal {
+        width: 140px;
+        padding: 15px;
+        margin: 0 5px;
+    }
+    
+    .personal p {
+        font-size: 16px;
+    }
+    
+    .personal img {
+        width: 40px;
+        margin-left: 10px;
+    }
+    
+    #titulo-personais {
+        font-size: 20px;
+        padding: 15px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .personais {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .personal {
+        width: 80%;
+        margin-bottom: 10px;
+    }
+}
+
+/* Melhorias gerais de responsividade */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 24px;
+        padding: 15px 10px;
+    }
+    
+    .promocao img {
+        max-width: 95vw;
+        border-radius: 20px;
+        padding: 5px;
+    }
+    
+    footer {
+        padding: 15px;
+        font-size: 14px;
+    }
 }

@@ -1,165 +1,153 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Aluno</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='areaAluno.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='areaAluno.css') }}">
+    <style>
+        .chart-container {
+            position: relative;
+            width: 88%;
+            margin: 20px auto;
+            padding: 20px;
+            background: #2d335b;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            height: 400px; /* Altura fixa para o contêiner */
+        }
+    </style>
 </head>
 <body>
     <header class="header">
         <h1>Olá, {{ aluno.nome }}</h1>
         <div class="header-buttons">
-            <a href="{{ url_for('pagamentos.pagamento') }}" class="button">Área de Pagamento</a>
             <a href="{{ url_for('logout.logout') }}" class="button">Logout</a>
         </div>
     </header>
 
-    <h2>Seus Treinamentos</h2>
-    <ul>
-        {% for treino in treinamentos %}
-            <li>
-                <strong>Professor:</strong> {{ treino.professor.nome }} <br>
-                <strong>Treinamento:</strong> {{ treino.treino }}
-            </li>
-        {% else %}
-            <p>Você ainda não recebeu nenhum treinamento.</p>
-        {% endfor %}
-    </ul>
-
-    <div style="width: 100%; max-width: 800px; margin: 0 auto;">
-        <div class="chart-container">
-            <h3>Seu Progresso</h3>
-            <canvas id="graficoProgressoAluno"></canvas>
-        </div>
-    </div>
-
-    <div style="width: 100%; max-width: 800px; margin: 20px auto;">
-        <h3>Último Progresso</h3>
-        <p>{{ ultimo_progresso }}</p> <!-- Adicione esta linha para verificar os dados -->
-        {% if ultimo_progresso %}
+    <main class="container">
+        <section class="treinamentos">
+            <h2>Treinamentos do Aluno</h2>
             <ul>
-                <li><strong>Data:</strong> {{ ultimo_progresso.data_atualizacao.strftime('%d/%m/%Y') }}</li>
-                <li><strong>Peso:</strong> {{ ultimo_progresso.peso or 0 }} kg</li>
-                <li><strong>Cintura:</strong> {{ ultimo_progresso.cintura or 0 }} cm</li>
-                <li><strong>Braço Esquerdo:</strong> {{ ultimo_progresso.bracoE or 0 }} cm</li>
-                <li><strong>Braço Direito:</strong> {{ ultimo_progresso.bracoD or 0 }} cm</li>
-                <li><strong>Coxa Esquerda:</strong> {{ ultimo_progresso.coxaE or 0 }} cm</li>
-                <li><strong>Coxa Direita:</strong> {{ ultimo_progresso.coxaD or 0 }} cm</li>
-                <li><strong>Panturrilha Esquerda:</strong> {{ ultimo_progresso.panturrilhaE or 0 }} cm</li>
-                <li><strong>Panturrilha Direita:</strong> {{ ultimo_progresso.panturrilhaD or 0 }} cm</li>
-                <li><strong>Tórax:</strong> {{ ultimo_progresso.torax or 0 }} cm</li>
-                <li><strong>Observações:</strong> {{ ultimo_progresso.observacoes or 'Nenhuma' }}</li>
+                {% if treinamentos %}
+                    {% for treino in treinamentos %}
+                        <li>
+                            <strong>Professor:</strong> {{ treino.professor.nome or 'N/A' }} <br>
+                            <strong>Treinamento:</strong> {{ treino.treino or 'N/A' }}
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <p>Você ainda não recebeu nenhum treinamento.</p>
+                {% endif %}
             </ul>
-        {% else %}
-            <p>Você ainda não possui progressos registrados.</p>
-        {% endif %}
-    </div>
+        </section>
+
+        <section class="progresso">
+            <div class="chart-container">
+                <h3>Seu Progresso</h3>
+                <canvas id="graficoProgressoAluno"></canvas>
+            </div>
+        </section>
+
+        <section class="ultimo-progresso">
+            <h3>Último Progresso</h3>
+            {% if ultimo_progresso %}
+                <ul>
+                    <li><strong>Data:</strong> {{ ultimo_progresso.data_atualizacao.strftime('%d/%m/%Y') }}</li>
+                    <li><strong>Peso:</strong> {{ ultimo_progresso.peso or 0 }} kg</li>
+                    <li><strong>Cintura:</strong> {{ ultimo_progresso.cintura or 0 }} cm</li>
+                    <li><strong>Braço Esquerdo:</strong> {{ ultimo_progresso.bracoE or 0 }} cm</li>
+                    <li><strong>Braço Direito:</strong> {{ ultimo_progresso.bracoD or 0 }} cm</li>
+                    <li><strong>Coxa Esquerda:</strong> {{ ultimo_progresso.coxaE or 0 }} cm</li>
+                    <li><strong>Coxa Direita:</strong> {{ ultimo_progresso.coxaD or 0 }} cm</li>
+                    <li><strong>Panturrilha Esquerda:</strong> {{ ultimo_progresso.panturrilhaE or 0 }} cm</li>
+                    <li><strong>Panturrilha Direita:</strong> {{ ultimo_progresso.panturrilhaD or 0 }} cm</li>
+                    <li><strong>Tórax:</strong> {{ ultimo_progresso.torax or 0 }} cm</li>
+                    <li><strong>Observações:</strong> {{ ultimo_progresso.observacoes or 'Nenhuma' }}</li>
+                </ul>
+            {% else %}
+                <p>Você ainda não possui progressos registrados.</p>
+            {% endif %}
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Academia. Todos os direitos reservados.</p>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        const ctxAluno = document.getElementById('graficoProgressoAluno').getContext('2d');
-        const dadosGraficoAluno = JSON.parse('{{ dados_grafico|tojson|safe }}');
-        
-        new Chart(ctxAluno, {
-            type: 'line',
-            data: {
-                labels: dadosGraficoAluno.labels,
-                datasets: [
-                    {
-                        label: 'Peso (kg)',
-                        data: dadosGraficoAluno.datasets[0].data,
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        fill: false
-                    },
-                    {
-                        label: 'Cintura (cm)',
-                        data: dadosGraficoAluno.datasets[1].data,
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        fill: false
-                    },
-                    {
-                        label: 'Média Braço (cm)',
-                        data: dadosGraficoAluno.datasets[2].data,
-                        borderColor: 'rgba(255, 206, 86, 1)',
-                        fill: false
-                    },
-                    {
-                        label: 'Média Coxa (cm)',
-                        data: dadosGraficoAluno.datasets[3].data,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        fill: false
-                    },
-                    {
-                        label: 'Média Panturrilha (cm)',
-                        data: dadosGraficoAluno.datasets[4].data,
-                        borderColor: 'rgba(153, 102, 255, 1)',
-                        fill: false
-                    },
-                    {
-                        label: 'Tórax (cm)',
-                        data: dadosGraficoAluno.datasets[5].data,
-                        borderColor: 'rgba(255, 159, 64, 1)',
-                        fill: false
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        labels: {
-                            color: '#e0e0e0',
+        // Aguardar o carregamento completo do DOM
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctxAluno = document.getElementById('graficoProgressoAluno').getContext('2d');
+            const dadosGraficoAluno = JSON.parse('{{ dados_grafico|tojson|safe }}');
+
+            // Destruir gráficos existentes para evitar duplicação
+            if (window.graficoAluno) {
+                window.graficoAluno.destroy();
+            }
+
+            // Criar novo gráfico
+            window.graficoAluno = new Chart(ctxAluno, {
+                type: 'line',
+                data: {
+                    labels: dadosGraficoAluno.labels,
+                    datasets: dadosGraficoAluno.datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // Permite que o gráfico se ajuste ao contêiner
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#e0e0e0',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Progresso do Aluno',
+                            color: '#00d4ff',
                             font: {
-                                size: 14
+                                size: 18,
+                                weight: 'bold'
                             }
                         }
                     },
-                    title: {
-                        display: true,
-                        text: 'Progresso do Aluno',
-                        color: '#00d4ff',
-                        font: {
-                            size: 18,
-                            weight: 'bold'
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        ticks: {
-                            color: '#e0e0e0'
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#e0e0e0'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
                         },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#e0e0e0'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
                         }
                     },
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            color: '#e0e0e0'
-                        },
-                        grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 10,
+                            top: 10,
+                            bottom: 10
                         }
                     }
-                },
-                layout: {
-                    padding: {
-                        left: 10,
-                        right: 10,
-                        top: 10,
-                        bottom: 10
-                    }
                 }
-            }
+            });
         });
     </script>
-
-    
 </body>
 </html>

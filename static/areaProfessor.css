@@ -2,51 +2,53 @@
 body {
     font-family: 'Arial', sans-serif;
     background-color: #1b1f38; /* Fundo escuro estilo Hydra */
-    color: #e0e0e0; /* Texto claro para contraste */
+    color: #e0e0e0; /* Texto claro */
     margin: 0;
     padding: 0;
     line-height: 1.6;
 }
 
+/* Títulos */
 h1, h2, h3 {
     text-align: center;
-    color: #00d4ff; /* Azul vibrante estilo Hydra */
+    color: #00d4ff; /* Azul vibrante */
     margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
+
 /* Header */
 .header {
     display: flex;
-    flex-wrap: wrap; /* Permite que os elementos quebrem linha em telas menores */
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 10px 20px; /* Adiciona espaçamento interno */
-    background: #252a48; /* Fundo escuro */
-    border-bottom: 2px solid #00d4ff; /* Linha inferior */
+    padding: 10px 20px;
+    background: #252a48;
+    border-bottom: 2px solid #00d4ff;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    box-sizing: border-box; /* Inclui padding na largura total */
+    box-sizing: border-box;
 }
 
 .header h1 {
-    color: #00d4ff; /* Azul vibrante */
+    color: #00d4ff;
     font-size: 20px;
     margin: 0;
     text-transform: uppercase;
     letter-spacing: 1px;
-    white-space: nowrap; /* Evita quebra de linha no texto */
+    white-space: nowrap;
 }
 
 .header-buttons {
     display: flex;
-    gap: 10px; /* Espaçamento entre os botões */
-    flex-wrap: wrap; /* Permite que os botões quebrem linha em telas menores */
-    justify-content: flex-end; /* Alinha os botões à direita */
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
 }
 
 .header-buttons .button {
-    padding: 8px 15px; /* Ajusta o tamanho dos botões */
+    padding: 8px 15px;
     background: #00d4ff;
     color: #1b1f38;
     border-radius: 5px;
@@ -58,8 +60,8 @@ h1, h2, h3 {
 }
 
 .header-buttons .button:hover {
-    background: #00a3cc; /* Efeito hover */
-    transform: translateY(-2px); /* Efeito de elevação */
+    background: #00a3cc;
+    transform: translateY(-2px);
 }
 
 /* Ajustes para dispositivos menores */
@@ -119,24 +121,27 @@ button:hover, a.button:hover {
 
 /* Formulários */
 form {
-    background: #252a48; /* Fundo escuro para formulários */
+    background: #252a48;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin: 20px auto;
     max-width: 600px;
-    align-items: center;
-    justify-content: center;
 }
 
-form label {
-    display: block;
-    margin-bottom: 5px;
+
+form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #00d4ff;
+    border-radius: 5px;
+    background: #1b1f38;
     color: #e0e0e0;
-    font-weight: bold;
+    transition: border-color 0.3s ease;
 }
 
-form input, form select, form textarea {
+form input{
     width: 95%;
     padding: 10px;
     margin-bottom: 15px;
@@ -146,6 +151,19 @@ form input, form select, form textarea {
     color: #e0e0e0;
     transition: border-color 0.3s ease;
 }
+
+form textarea {
+    resize: vertical; /* Permite redimensionar apenas verticalmente */
+    min-height: 100px; /* Altura mínima para o textarea */
+    max-height: 300px; /* Altura máxima para o textarea */
+    overflow-y: auto; /* Adiciona barra de rolagem se necessário */
+    background: #1b1f38;
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid #00d4ff;
+    color: white;
+}
+
 
 form input:focus, form select:focus, form textarea:focus {
     outline: none;
@@ -193,7 +211,7 @@ canvas {
     max-width: 100%;
     height: auto;
     margin: 20px auto;
-    background: #252a48; /* Fundo do gráfico */
+    background: #252a48;
     border-radius: 8px;
     padding: 10px;
 }
@@ -267,7 +285,7 @@ footer {
 canvas {
     display: block;
     max-width: 100%; /* O canvas ocupará 100% da largura do contêiner */
-    height: 400px; /* Define uma altura fixa para o gráfico */
+    height: auto; /* Ajusta a altura proporcionalmente */
     background: #252a48; /* Fundo escuro para o gráfico */
     border-radius: 8px;
     margin-top: 10px; /* Espaçamento entre o título e o gráfico */
@@ -276,7 +294,6 @@ canvas {
 /* Contêiner do gráfico */
 .chart-container {
     position: relative;
-    width: 100%;
     max-width: 800px; /* Limita a largura máxima */
     margin: 20px auto; /* Centraliza o gráfico */
     padding: 20px;
@@ -289,15 +306,7 @@ canvas {
     justify-content: center; /* Centraliza verticalmente */
     text-align: center; /* Centraliza o texto */
     height: auto; /* Remove qualquer altura fixa */
-}
-
-/* Ajustes para o título do gráfico */
-.chart-container h3 {
-    color: #00d4ff; /* Azul vibrante */
-    font-size: 20px;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    overflow: hidden; /* Garante que o conteúdo não ultrapasse o contêiner */
 }
 
 /* Ajustes para tablets */
@@ -335,12 +344,18 @@ canvas {
         flex: 1; /* Faz os botões ocuparem o mesmo espaço */
         max-width: 150px; /* Limita a largura máxima dos botões */
     }
+
+    canvas {
+        height: auto; /* Ajusta a altura proporcionalmente */
+    }
 }
 
 /* Ajustes para dispositivos menores */
 @media (max-width: 480px) {
     .chart-container {
         padding: 10px;
+        max-width: 400px;
+        width: 90%;
     }
 
     .chart-container h3 {
@@ -354,7 +369,12 @@ canvas {
     h1, h2, h3 {
         font-size: 18px;
     }
+
+    canvas {
+        height: auto; /* Ajusta a altura proporcionalmente */
+    }
 }
+
 
 /* Links de navegação */
 nav {
@@ -388,4 +408,140 @@ footer {
     border-top: 1px solid #00d4ff;
     font-size: 14px;
     letter-spacing: 1px;
+}
+
+.informacao-aluno{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #2d335b; /* Fundo do contêiner */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 50%;
+    margin: 0 auto; /* Centraliza horizontalmente */
+}
+
+.ultimo_progresso {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #2d335b;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 30px;
+    color: #e0e0e0;
+}
+
+.ultimo_progresso h2 {
+    color: #00d4ff;
+    font-size: 22px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #00d4ff;
+    padding-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.ultimo_progresso ul {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.ultimo_progresso li {
+    background: #252a48;
+    padding: 12px 18px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ultimo_progresso li strong {
+    color: #00d4ff;
+    margin-right: 10px;
+}
+
+@media (max-width: 600px) {
+    .ultimo_progresso ul {
+        grid-template-columns: 1fr;
+    }
+
+    .ultimo_progresso {
+        padding: 20px;
+    }
+
+    .ultimo_progresso h2 {
+        font-size: 18px;
+    }
+}
+
+
+.treinamentos {
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #2d335b;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.treinamentos h2 {
+    color: #00d4ff;
+    font-size: 22px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.treinamentos ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.treinamentos li {
+    background: #252a48;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: background 0.3s ease;
+}
+
+.treinamentos li:hover {
+    background: #3a3f6b;
+}
+
+.treinamentos li strong {
+    color: #00d4ff;
+}
+
+.treinamentos p {
+    text-align: center;
+    font-weight: bold;
+    background: #252a48;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10x rgba(0,0,0,0.2);
 }

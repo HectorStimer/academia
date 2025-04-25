@@ -36,8 +36,9 @@ class LoginAlunoForm(FlaskForm):
 
 class TreinamentoForm(FlaskForm):
     id_aluno = SelectField('ID do Aluno', validators=[DataRequired()], coerce=int) 
-    treino = TextAreaField('Treinamento', validators=[DataRequired()])
+    treino = TextAreaField('Treinamento', validators=[Optional()])
     submit = SubmitField('Enviar Treinamento')
+    deletar = SubmitField('Excluir Treinamento')
 
 
 class receberTreinamentoForm(FlaskForm):
@@ -69,11 +70,15 @@ class AdminForm(FlaskForm):
     data_nascimento = DateField("Data de Nascimento", format='%Y-%m-%d', validators=[Optional()])
     plano_id = SelectField("Plano", coerce=int, validators=[Optional()])
     status = SelectField("Status", choices=[("ativo", "Ativo"), ("inativo", "Inativo")], validators=[Optional()])
-    mes_pagamento = SelectField("Mês de Pagamento", choices=[
+    senha = PasswordField("Senha", validators=[Optional(), Length(min=6, max=30)])  # Senha opcional
+    submit = SubmitField("Atualizar")
+
+
+class PagamentoForm(FlaskForm):
+    mes= SelectField("Mês", choices=[
         ("Janeiro", "Janeiro"), ("Fevereiro", "Fevereiro"), ("Março", "Março"), ("Abril", "Abril"),
         ("Maio", "Maio"), ("Junho", "Junho"), ("Julho", "Julho"), ("Agosto", "Agosto"),
         ("Setembro", "Setembro"), ("Outubro", "Outubro"), ("Novembro", "Novembro"), ("Dezembro", "Dezembro")
-    ], validators=[Optional()])
-    status_pagamento = SelectField("Status do Pagamento", choices=[("pago", "Pago"), ("nao_pago", "Não Pago")], validators=[Optional()])
-    senha = PasswordField("Senha", validators=[Optional(), Length(min=6, max=30)])  # Senha opcional
-    submit = SubmitField("Atualizar")
+    ], validators=[DataRequired()])
+    status = SelectField("Status", choices=[("pago", "Pago"), ("nao_pago", "Não Pago")], validators=[DataRequired()])
+    submit = SubmitField("Registrar Pagamento")

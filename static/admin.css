@@ -1,149 +1,423 @@
 /* Estilo geral */
 body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #1e1e2f;
+    font-family: 'Arial', sans-serif;
+    background-color: #1b1f38; /* Fundo escuro estilo Hydra */
+    color: #e0e0e0; /* Texto claro */
     margin: 0;
-    padding: 20px;
-    color: #c7c7d9;
+    padding: 0;
+    line-height: 1.6;
 }
 
+/* Títulos */
+h1, h2, h3 {
+    text-align: center;
+    color: #00d4ff; /* Azul vibrante */
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Links */
+a {
+    text-decoration: none;
+    color: #00d4ff;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: #00a3cc;
+}
+
+/* Header */
+.header {
+    display: flex;
+    flex-wrap: wrap; /* Permite que os elementos quebrem linha em telas menores */
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 20px; /* Adiciona espaçamento interno */
+    background: #252a48; /* Fundo escuro */
+    border-bottom: 2px solid #00d4ff; /* Linha inferior */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box; /* Inclui padding na largura total */
+}
+
+.header h1 {
+    color: #00d4ff; /* Azul vibrante */
+    font-size: 24px;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap; /* Evita quebra de linha no texto */
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px; /* Espaçamento entre os botões */
+    flex-wrap: wrap; /* Permite que os botões quebrem linha em telas menores */
+    justify-content: flex-end; /* Alinha os botões à direita */
+}
+
+.header-buttons a {
+    text-decoration: none;
+    color: #1b1f38;
+    background-color: #00d4ff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+
+.header-buttons a:hover {
+    background-color: #00a3cc;
+}
+
+/* Container principal */
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #252a48; /* Fundo secundário escuro */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Lista de treinamentos */
 ul {
     list-style: none;
     padding: 0;
-    display: flex;
-    justify-content: center;
+    margin: 20px auto;
+    max-width: 800px;
 }
 
-li {
-    background: #2a2a3c;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+ul li {
+    background: #2d335b; /* Fundo dos itens */
+    margin: 10px 0;
     padding: 15px;
-    margin: 10px;
-    width: 80%;
-    max-width: 600px;
-    border-left: 5px solid #4cafef;
-    color: #c7c7d9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: #e0e0e0;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-strong {
-    color: #333;
-    font-weight: bold;
-}
-
-p {
-    text-align: center;
-    color: #888;
-    font-size: 16px;
-}
-
-/* Cabeçalho */
-h1 {
-    text-align: center;
-    color: #4cafef;
-    margin-bottom: 20px;
-    font-size: 2.5rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-/* Formulário */
-form {
-    background: #2a2a3c;
-    border-radius: 10px;
+ul li:hover {
+    transform: translateY(-3px); /* Efeito de elevação */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    padding: 20px;
-    max-width: 600px;
-    margin: 0 auto;
-    border: 1px solid #4cafef;
 }
 
-/* Labels */
-form label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #c7c7d9;
-    text-transform: uppercase;
-    font-size: 0.9rem;
+ul li strong {
+    color: #00d4ff; /* Destaque para os títulos */
 }
 
-/* Inputs */
-form input,
-form select,
-form button {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #4cafef;
+/* Botões */
+a.button {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    background: #00d4ff;
+    color: #1b1f38;
     border-radius: 5px;
-    font-size: 14px;
-    box-sizing: border-box;
-    background-color: #1e1e2f;
-    color: #c7c7d9;
-    transition: all 0.3s ease;
-}
-
-form input:focus,
-form select:focus {
-    outline: none;
-    border-color: #4cafef;
-    box-shadow: 0 0 5px #4cafef;
-}
-
-/* Botão */
-form button {
-    background-color: #4cafef;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-form button:hover {
-    background-color: #3a9fd9;
-    transform: scale(1.05);
-}
-
-/* Mensagens de feedback */
-.flash-message {
     text-align: center;
-    margin: 10px auto;
-    padding: 10px;
-    border-radius: 5px;
-    max-width: 600px;
     font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+a.button:hover {
+    background: #00a3cc; /* Efeito hover */
+    transform: translateY(-2px); /* Efeito de elevação */
+}
+
+/* Estilo para o gráfico */
+canvas {
+    display: block;
+    max-width: 100%; /* O canvas ocupará 100% da largura do contêiner */
+    height: 400px; /* Define uma altura fixa para o gráfico */
+    background: #252a48; /* Fundo escuro para o gráfico */
+    border-radius: 8px;
+    margin-top: 10px; /* Espaçamento entre o título e o gráfico */
+}
+
+/* Contêiner do gráfico */
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px; /* Limita a largura máxima */
+    margin: 20px auto; /* Centraliza o gráfico */
+    padding: 20px;
+    background: #2d335b; /* Fundo do contêiner */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex; /* Adiciona flexbox */
+    flex-direction: column; /* Organiza os elementos verticalmente */
+    align-items: center; /* Centraliza horizontalmente */
+    justify-content: center; /* Centraliza verticalmente */
+    text-align: center; /* Centraliza o texto */
+    height: auto; /* Remove qualquer altura fixa */
+}
+
+/* Ajustes para o título do gráfico */
+.chart-container h3 {
+    color: #00d4ff; /* Azul vibrante */
+    font-size: 20px;
+    margin-bottom: 10px;
     text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.flash-message.success {
-    background-color: #2e7d32;
-    color: #c8e6c9;
-    border: 1px solid #1b5e20;
-}
-
-.flash-message.error {
-    background-color: #b71c1c;
-    color: #ffcdd2;
-    border: 1px solid #f44336;
-}
-
-/* Responsividade */
+/* Ajustes para tablets */
 @media (max-width: 768px) {
-    form {
+    .chart-container {
+        max-width: 100%; /* Usa toda a largura disponível */
         padding: 15px;
     }
 
-    form input,
-    form select,
-    form button {
-        font-size: 14px;
+    .chart-container h3 {
+        font-size: 18px; /* Reduz o tamanho do título */
     }
 
-    h1 {
-        font-size: 2rem;
+    ul li {
+        padding: 10px;
     }
+
+    .header {
+        flex-direction: column; /* Organiza os elementos verticalmente */
+        align-items: center; /* Centraliza os elementos */
+        text-align: center;
+    }
+
+    .header h1 {
+        font-size: 18px; /* Reduz o tamanho do texto */
+        margin-bottom: 10px; /* Adiciona espaçamento abaixo do título */
+    }
+
+    .header-buttons {
+        justify-content: center; /* Centraliza os botões */
+        width: 100%; /* Faz os botões ocuparem toda a largura */
+    }
+
+    .header-buttons .button {
+        flex: 1; /* Faz os botões ocuparem o mesmo espaço */
+        max-width: 150px; /* Limita a largura máxima dos botões */
+    }
+
+    form, .card {
+        padding: 15px;
+    }
+
+    h1, h2, h3 {
+        font-size: 18px;
+    }
+
+    table th, table td {
+        font-size: 14px;
+    }
+}
+
+/* Ajustes para dispositivos menores */
+@media (max-width: 480px) {
+    .chart-container {
+        padding: 10px;
+    }
+
+    .chart-container h3 {
+        font-size: 16px; /* Reduz ainda mais o tamanho do título */
+    }
+
+    ul li {
+        padding: 8px;
+    }
+
+    h1, h2, h3 {
+        font-size: 18px;
+    }
+
+    table th, table td {
+        font-size: 12px;
+    }
+}
+
+/* Links de navegação */
+nav {
+    text-align: center;
+    margin-top: 20px;
+}
+
+nav a {
+    margin: 0 10px;
+    padding: 10px 15px;
+    background: #00d4ff;
+    color: #1b1f38;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+nav a:hover {
+    background: #00a3cc;
+    transform: translateY(-2px);
+}
+
+/* Rodapé */
+footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    background: #252a48;
+    color: #e0e0e0;
+    border-top: 1px solid #00d4ff;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+/* Botões */
+button, input[type="submit"] {
+    background-color: #00d4ff;
+    color: #1b1f38;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #00a3cc;
+    transform: translateY(-2px);
+}
+
+/* Formulários */
+form {
+    background-color: #252a48;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #00d4ff;
+}
+
+input, select, textarea {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #00d4ff;
+    border-radius: 4px;
+    background-color: #1f4068;
+    color: #e0e0e0;
+    font-size: 16px;
+    margin-left: 8px;
+}
+select{
+    background-color: #1f4068;
+    color: #e0e0e0;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #00d4ff;
+    width: 98%;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #00d4ff;
+    box-shadow: 0 0 5px #00d4ff;
+}
+
+/* Tabelas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #1f4068;
+    color: #e0e0e0;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #00d4ff;
+}
+
+th {
+    background-color: #162447;
+    color: #00d4ff;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #1a1a2e;
+}
+
+tr:hover {
+    background-color: #162447;
+}
+
+/* Cards */
+.card {
+    background-color: #252a48;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 800px;
+    color: #e0e0e0;
+}
+
+.card h3 {
+    color: #00d4ff;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card p {
+    margin: 10px 0;
+    color: #e0e0e0;
+}
+
+/* Navegação */
+nav {
+    background-color: #252a48;
+    padding: 10px 20px;
+    border-bottom: 2px solid #00d4ff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+nav a {
+    margin: 0 10px;
+    padding: 10px 15px;
+    background: #00d4ff;
+    color: #1b1f38;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+nav a:hover {
+    background: #00a3cc;
+    transform: translateY(-2px);
+}
+
+/* Rodapé */
+footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    background: #252a48;
+    color: #e0e0e0;
+    border-top: 1px solid #00d4ff;
+    font-size: 14px;
+    letter-spacing: 1px;
 }

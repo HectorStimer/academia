@@ -3,6 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Aluno</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='registro-aluno.css') }}">
+</head>
+<body>
+
+    <div class="registro-container">
+        <h1>Registrar Aluno</h1>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {{ form.nome.label }} {{ form.nome() }}
+            {{ form.email.label }} {{ form.email() }}
+            {{ form.senha.label }} {{ form.senha() }}
+            {{ form.confirmar.label }} {{ form.confirmar() }}
+            {{ form.telefone.label }} {{ form.telefone() }}
+            {{ form.cpf.label }} {{ form.cpf() }}
+            {{ form.data_nascimento.label }} {{ form.data_nascimento() }}
+            {{ form.plano_id.label }} {{ form.plano_id() }}
+            {{ form.submit() }}
+        </form>
+    </div>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registre-se</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='registro-aluno.css') }}">
 </head>

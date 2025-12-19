@@ -1,4 +1,34 @@
 <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='areaAluno.css') }}">
+    <title>Área do Aluno</title>
+</head>
+<body>
+    <h1>Bem-vindo, {{ aluno.nome }}</h1>
+    <h2>Último progresso</h2>
+    {% if ultimo_progresso %}
+        <p>Peso: {{ ultimo_progresso.peso }}</p>
+        <p>Cintura: {{ ultimo_progresso.cintura }}</p>
+    {% else %}
+        <p>Sem progresso registrado ainda.</p>
+    {% endif %}
+
+    <h2>Treinamentos</h2>
+    <ul>
+        {% for t in treinamentos %}
+            <li>{{ t.treino }}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Exemplo de gráfico (dados já calculados no backend) -->
+    <canvas id="graficoProgresso"></canvas>
+
+</body>
+</html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">

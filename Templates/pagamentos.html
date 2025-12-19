@@ -3,6 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='pagamentos.css') }}">
+    <title>Pagamentos</title>
+</head>
+<body>
+    <h1>Mensalidades</h1>
+
+    <p>Plano atual: {{ plano_atual.nomePlano if plano_atual else 'Nenhum' }}</p>
+
+    <h2>Pagamentos</h2>
+    <ul>
+        {% for p in pagamentos %}
+            <li>{{ p.mes }} - {{ p.status }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Alterar Plano</h2>
+    <form method="POST">
+        <select name="plano_id">
+            {% for plano in planos %}
+                <option value="{{ plano.id_plano }}" {% if plano.id_plano == (plano_atual.id_plano if plano_atual else None) %}selected{% endif %}>{{ plano.nomePlano }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Alterar</button>
+    </form>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Área de Pagamentos</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='pagamentos.css') }}">
 </head>

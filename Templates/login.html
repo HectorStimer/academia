@@ -41,3 +41,46 @@
     </div>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registre-se</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='registro-aluno.css') }}">
+
+</head>
+<body>
+
+    <div class="login-container">
+
+    <h1>login</h1>
+
+    <form action="{{url_for('login_aluno.loginAluno')}}" id="register" method="post">
+
+        {{form.hidden_tag()}}
+        <label for="email">Email: </label> 
+        {{form.email()}}
+        
+        <label for="senha">Senha: </label>
+        {{form.senha()}}
+
+        <button type="submit">Entrar</button>
+        
+        <p>Ainda nao tem uma conta?<a href="{{url_for('registrar_aluno.registrarAluno')}}">Entre aqui</a></p>
+    </form>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+            <ul>
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    
+    </div>
+</body>
+</html>

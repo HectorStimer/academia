@@ -1,0 +1,34 @@
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: academiahydra
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      # Map to a different host port if 3306 is already in use on the host
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  web:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "5000:5000"
+    environment:
+      # example connection; override in production or .env
+      DATABASE_URL: "mysql+pymysql://root:example@db/academiahydra"
+      SECRET_KEY: "replace-with-secure-key"
+    volumes:
+      - .:/app
+
+volumes:
+  db_data:

@@ -1,4 +1,32 @@
 <!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='areaProfessor.css') }}">
+    <title>Área do Professor</title>
+</head>
+<body>
+    <h1>Bem-vindo, {{ professor.nome }}</h1>
+
+    <h2>Treinamentos</h2>
+    <ul>
+        {% for t in treinamentos %}
+            <li>{{ t.treino }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Registrar Progresso</h2>
+    <form method="POST">
+        {{ form_progresso.hidden_tag() }}
+        {{ form_progresso.id_aluno }}
+        {{ form_progresso.peso }}
+        {{ form_progresso.submit }}
+    </form>
+
+</body>
+</html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">

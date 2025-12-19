@@ -1,9 +1,9 @@
 from flask import render_template, request, redirect, url_for, flash, Blueprint
 from flask_login import login_user, login_required, current_user, logout_user
 from flask import current_app as app
-from extensions import db, lm
-from models import *
-from forms import *
+from extensions import db
+from models import Professor
+from forms import RegistrarProfessorForm
 
 registrar_professor_bp = Blueprint('registra_professor', __name__)
 

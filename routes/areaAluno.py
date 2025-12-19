@@ -1,18 +1,17 @@
 from flask import render_template, request, redirect, url_for, flash, Blueprint
 from flask_login import login_user, login_required, current_user, logout_user
 from flask import current_app as app
-from extensions import db, lm
-from models import *
-from forms import *
+from extensions import db
+from models import Treinamento, Progresso
 
 areaAluno_bp = Blueprint('areaAluno', __name__)
 
 @areaAluno_bp.route('/', methods=['GET'])
 @login_required
 def areaAluno():
-    if not current_user.id_aluno: 
+    if not getattr(current_user, 'id_aluno', None):
         flash("Você precisa ser um aluno para acessar essa área.", "warning")
-        return redirect(url_for("loginAluno"))
+        return redirect(url_for("login_aluno.loginAluno"))
     
     treinamentos = Treinamento.query.filter_by(id_aluno=current_user.id_aluno).all()
     

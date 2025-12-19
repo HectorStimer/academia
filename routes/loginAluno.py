@@ -1,9 +1,9 @@
 from flask import render_template, request, redirect, url_for, flash, Blueprint
 from flask_login import login_user, login_required, current_user, logout_user
 from flask import current_app as app
-from extensions import db, lm
-from models import *
-from forms import *
+from extensions import db
+from models import Aluno
+from forms import LoginAlunoForm
 
 login_aluno_bp = Blueprint('login_aluno', __name__)
 

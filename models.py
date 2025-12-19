@@ -55,7 +55,7 @@ class Professor(db.Model, UserMixin):
     def get_id(self):
         return f"professor-{self.id_professor}"
 
-class Treinamento(db.Model, UserMixin):
+class Treinamento(db.Model):
     __tablename__ = 'treinamentos'
 
     id_treinamento = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -66,14 +66,14 @@ class Treinamento(db.Model, UserMixin):
     aluno = db.relationship('Aluno', backref=db.backref('treinamentos', lazy=True, cascade="all, delete-orphan"))
     professor = db.relationship('Professor', backref=db.backref('treinamentos', lazy=True, cascade="all, delete-orphan"))
 
-class Plano(db.Model, UserMixin):
+class Plano(db.Model):
     __tablename__ = 'planos'
 
     id_plano = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nomePlano = db.Column(db.String(50), nullable=False)
     preco = db.Column(db.Numeric(10, 2), nullable=False)
 
-class Progresso(db.Model, UserMixin):
+class Progresso(db.Model):
     __tablename__ = 'progressos'
     
     id_progresso = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -96,7 +96,7 @@ class Progresso(db.Model, UserMixin):
     def __repr__(self):
         return f'<Progresso {self.id_progresso} - Aluno {self.id_aluno}>'
 
-class Administrador(db.Model, UserMixin):
+class Administrador(db.Model):
     __tablename__ = "administrador"
 
     id_ADM= db.Column(db.Integer, primary_key=True, autoincrement=True)

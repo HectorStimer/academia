@@ -32,3 +32,37 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registre-se</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='registro-aluno.css') }}">
+</head>
+<body>
+
+    <div class="login-container">
+        <h1>Registre-se</h1>
+
+        <form action="{{ url_for('registra_professor.registerProfessor') }}" method="POST">
+            {{ form.hidden_tag() }}
+            <label for="nome">Nome:</label>
+            {{ form.nome() }}
+            <label for="email">Email:</label>
+            {{ form.email() }}
+            <label for="senha">Senha:</label>
+            {{ form.senha() }}
+            <label for="confirmar_senha">Confirmar Senha:</label>
+            {{ form.confirmar() }}
+            <label for="telefone">Telefone:</label>
+            {{ form.telefone() }}
+            <label for="especialidade">Especialidade:</label>
+            {{ form.especialidade() }}
+            <button type="submit">Registrar</button>
+            <p>Já possui conta? <a href="{{ url_for('login_professor.loginProfessor') }}">Entre aqui</a></p>
+        </form>
+    </div>
+
+</body>
+</html>

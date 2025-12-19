@@ -1,9 +1,4 @@
-from flask import render_template, request, redirect, url_for, flash, session
-from flask_login import login_user, login_required, current_user, logout_user
-from flask import current_app as app
-from extensions import db, lm
-from models import *
-from forms import *
+"""Routes package - exposes blueprints to be registered by the application."""
 
 from .administracao import admin_bp
 from .areaAluno import areaAluno_bp

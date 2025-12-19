@@ -1,18 +1,23 @@
-from email.policy import default
-from main import db
+from main import db, app
 from models import Professor
-from werkzeug.security import generate_password_hash
 
-novo_professor = Professor(
-    
-    
-    nome="João Silva",
-    telefone="11987654321",
-    especialidade="Musculação",
-    email="joao@email.com",
-    senha=generate_password_hash("senha123")  # Armazena a senha criptografada
-)
 
-db.session.add(novo_professor)
-db.session.commit()
+def seed_professor():
+    novo_professor = Professor(
+        nome="João Silva",
+        telefone="11987654321",
+        especialidade="Musculação",
+        email="joao@email.com",
+    )
+
+    # Use the model helper to set the password correctly
+    novo_professor.set_senha("senha123")
+
+    db.session.add(novo_professor)
+    db.session.commit()
+
+
+if __name__ == '__main__':
+    with app.app_context():
+        seed_professor()
 

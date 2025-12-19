@@ -1,91 +1,137 @@
 
-# Academia Hydra — Aplicação Flask
+# Academia (projeto Flask)
 
-Projeto simples para gerenciar alunos, professores, planos, pagamentos e progresso físico de uma academia, com usuarios de aluno e professor separados.
-
-Principais tecnologias: **Flask**, **Flask-SQLAlchemy**, **Flask-Login**, **Flask-WTF**, **MySQL (opcional via Docker)**.
+Aplicação de exemplo para gerenciar **alunos**, **professores**, **planos**, **pagamentos** e **progresso** — com foco em boas práticas (application factory, Blueprints, migrações, testes e CI).
 
 ---
 
-## 🚀 Quickstart
+## 🔎 O que tem neste repositório
 
-Recomendado: executar via **Docker Compose** (inicia web + banco MySQL).
+- **`main.py`** — application factory (`create_app`) e bootstrap da aplicação
+- **`config.py`** — configuração via variáveis de ambiente (dotenv)
+- **`extensions.py`** — db (SQLAlchemy), LoginManager, etc.
+- **`models.py`** — modelos de domínio (Aluno, Professor, Plano, Treinamento...)
+- **`forms.py`** — formulários WTForms
+- **`routes/`** — blueprints organizados por área (auth, areaAluno, areaProfessor, administracao...)
+- **`templates/`**, **`static/`** — frontend (Jinja2 + CSS)
+- **`create_db.py`**, **`create_plano.py`** — scripts utilitários (criar tabelas e seed)
+- **`tests/`** — testes automatizados (pytest)
+- **`Dockerfile`**, **`docker-compose.yml`** — facilitar execução local em containers
+- **`requirements.txt`** — dependências Python
+- **`.github/workflows/ci.yml`** — pipeline de CI (executa testes)
+
+---
+
+## 🧰 Tecnologias principais
+
+- Python 3.11
+- Flask (Blueprints, Application Factory)
+- Flask-SQLAlchemy, Flask-Migrate
+- Flask-Login, Flask-WTF (WTForms)
+- MySQL (container via Docker)
+- pytest, pytest-flask
+- Docker & docker-compose
+- GitHub Actions (CI)
+
+---
+
+## 🚀 Como rodar (rápido)
 
 ### Com Docker (recomendado)
 
-1. Subir os serviços:
+1. Inicie os serviços:
 
 ```powershell
 docker compose up --build -d
 ```
 
-2. Aguarde o serviço `db` ficar saudável e rode os scripts de criação/seed:
+2. Aguarde o banco ficar `healthy` e execute os utilitários:
 
 ```powershell
 docker compose exec web python create_db.py
 docker compose exec web python create_plano.py
 ```
 
-3. Abra http://localhost:5000 no navegador.
+3. Acesse: `http://localhost:5000`
 
-> Obs: se a porta 3306 do host estiver em uso, o compose usa a porta `3307` no host por padrão.
+Observações:
+- Se a porta 3306 do host estiver ocupada, o compose mapeia o MySQL para `3307:3306` por padrão.
 
-### Sem Docker (local)
+### Local (sem Docker)
 
-1. Instale Python 3.10+ e crie um virtualenv:
+1. Crie um virtualenv e instale dependências:
 
 ```powershell
-python -m venv venv
-.\venv\Scripts\pip.exe install --upgrade pip
-.\venv\Scripts\pip.exe install -r requirements.txt
-.\venv\Scripts\python.exe main.py
+python -m venv .venv; .\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
 ```
 
-2. Ajuste `DATABASE_URL` e `SECRET_KEY` (use `.env` ou variáveis de ambiente). Veja `.env.example`.
+2. Configure variáveis de ambiente (ex.: `SECRET_KEY`, `DATABASE_URL`). Use `.env` baseado em `.env.example`.
+
+3. Crie DB/seed e rode a app:
+
+```powershell
+python create_db.py
+python create_plano.py
+python main.py
+```
+
+ou via Flask CLI:
+
+```powershell
+$env:FLASK_APP='main.py'
+flask run
+```
 
 ---
 
-## ⚙️ Variáveis de ambiente
+## ✅ Testes e CI
 
-Coloque no `.env` (ou exporte no ambiente):
+- Rodar testes no container:
 
-- `DATABASE_URL` — URI de conexão (ex.: `mysql+pymysql://root:example@db/academiahydra`)
-- `SECRET_KEY` — chave secreta do Flask
+```powershell
+docker compose exec web env PYTHONPATH=/app pytest -q
+```
 
-Um exemplo está no arquivo `.env.example` no repositório.
-
----
-
-## 🧱 Banco de dados / Seed
-
-- `create_db.py` — cria as tabelas (usa `db.create_all()`)
-- `create_plano.py` — script de seed para criar um usuário professor de exemplo
-
-Execute-os dentro do container (`docker compose exec web ...`) ou localmente com o venv ativo.
+- Local: `pytest -q`
+- CI: existe um workflow do GitHub Actions que executa `pytest` em push/PR.
 
 ---
 
-## 📁 Estrutura do projeto (resumo)
+## 🔁 Migrações e seeds
 
-- `main.py` — instancia app, registra blueprints e configura LoginManager
-- `models.py` — modelos SQLAlchemy
-- `forms.py` — formulários WTForms
-- `routes/` — blueprints por área (login, admin, aluno, professor, pagamentos)
-- `templates/` e `static/` — front-end
-- `extensions.py` — inicialização de `db` e `LoginManager`
+- **Migrações** (Flask-Migrate):
+
+```powershell
+flask db init   # (se ainda não houver migrations)
+flask db migrate -m "mensagem"
+flask db upgrade
+```
+
+- **Seeds / utilitários**:
+
+```powershell
+python create_db.py   # cria tabelas (para desenvolvimento)
+python create_plano.py  # insere plano/professor de exemplo
+```
 
 ---
 
-## Boas práticas / notas e recomendações
+## 🐞 Troubleshooting rápido
 
-- **Segurança**: não comitar segredos. Use `.env` e `.gitignore` (já adicionado). 🔒
-- **App factory**: considerar migrar para o padrão application factory para testes e flexibilidade. 🧩
-- **Migrations**: para produção, adicionar Alembic (Flask-Migrate) para versionamento do esquema do DB. 🗂️
-- **Testes**: adicionar testes automatizados (pytest) e CI (GitHub Actions) para cobertura básica. 🧪
+- `email_validator` faltando: instale `email-validator` (`requirements.txt` já atualizado).
+- Erro "no secret key set": defina `SECRET_KEY` no `.env` ou no cfg de testes.
+- MySQL 8 auth: se houver erro de autenticação, certifique-se de ter `cryptography` instalado (já incluído nas dependências).
+- Docker: verifique se o Docker daemon está rodando e aguarde a saúde do container DB (`docker compose ps` / `docker compose logs db`).
 
 ---
 
-## 🧩 Contribuindo
+## 🤝 Contribuições
 
-1. Abra uma issue ou PR descrevendo a mudança.
-2. Faça uma branch, escreva testes e inclua passos de reprodução no PR.
+1. Crie uma branch a partir de `main` ou da branch de features.
+2. Escreva testes para suas mudanças.
+3. Abra um Pull Request e descreva as alterações detalhadamente.
+
+---
+
+Se quiser, eu posso: (a) commitar e pushar este README, e (b) abrir um PR e monitorar o CI. Quer que eu faça isso agora?

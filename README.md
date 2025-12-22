@@ -132,6 +132,3 @@ python create_plano.py  # insere plano/professor de exemplo
 2. Escreva testes para suas mudanças.
 3. Abra um Pull Request e descreva as alterações detalhadamente.
 
----
-
-Se quiser, eu posso: (a) commitar e pushar este README, e (b) abrir um PR e monitorar o CI. Quer que eu faça isso agora?
